@@ -28,7 +28,9 @@ object WarpsInventory {
     init {
         val glass = ItemBuilder(Material.STAINED_GLASS_PANE, 7.toShort()).setName("§0").build()
         inventory = InventoryBuilder(54, "§9Shops").fillWith(glass, 0, 8).fillWith(glass, 45, 53).setItem(4, ItemBuilder(Material.SIGN).setName("§9Infos").setLore(listOf(" ", "§7Von §bLars Artmann §8| §bLartyHD", "§7für §bClassic §7programmiert", "", "§7Danke an Terra für das coole §bProjekt")).build()).setItem(49, ItemBuilder(Material.NETHER_STAR).setName("§9Setze deinen eigenen Warp").addLore("§7Setzt den Warp auf deine aktuelle Location").build())
-        val conf = Configuration(File("plugins${File.separator}ShopWarps", "shops.yml"))
+        val file = File("plugins${File.separator}ShopWarps", "shops.yml")
+        if (!file.exists()) file.mkdirs()
+        val conf = Configuration(file)
         if (conf.get("shops") != null)
             warps.addAll(conf.get("shops") as MutableList<Warp>)
         updateWarps()
