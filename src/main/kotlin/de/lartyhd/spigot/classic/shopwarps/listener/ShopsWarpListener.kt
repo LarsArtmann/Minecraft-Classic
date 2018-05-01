@@ -28,28 +28,27 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
         val humanEntity = event.whoClicked
         if (event.clickedInventory == null
                 || event.clickedInventory.name == null
-                || event.clickedInventory.name != "§9Shop") {
-            cancel(event)
-            if (event.slot == 49) {
-                humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
-                if (config[humanEntity as Player] != null) {
-                    humanEntity.sendMessage("§cDu bist schon am erstellen eines Shops")
-                    humanEntity.closeInventory()
-                    return
-                }
-                config[humanEntity] = NullWarp(humanEntity.uniqueId, humanEntity.location)
-                humanEntity.sendMessage("§aGib dein Namen des Shops ein:")
+                || event.clickedInventory.name != "§9Shop") return
+        cancel(event)
+        if (event.slot == 49) {
+            humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
+            if (config[humanEntity as Player] != null) {
+                humanEntity.sendMessage("§cDu bist schon am erstellen eines Shops")
                 humanEntity.closeInventory()
                 return
             }
-            if (event.slot < 9 || event.slot > 44
-                    || event.currentItem == null
-                    || event.currentItem.itemMeta == null
-                    || event.currentItem.itemMeta.displayName == null) return
-            val warp = WarpsInventory.getWarp(event.currentItem.itemMeta.displayName.substring(2))
-            if (event.currentItem != warp?.getItem()) return
-            humanEntity.teleport(warp?.location)
+            config[humanEntity] = NullWarp(humanEntity.uniqueId, humanEntity.location)
+            humanEntity.sendMessage("§aGib dein Namen des Shops ein:")
+            humanEntity.closeInventory()
+            return
         }
+        if (event.slot < 9 || event.slot > 44
+                || event.currentItem == null
+                || event.currentItem.itemMeta == null
+                || event.currentItem.itemMeta.displayName == null) return
+        val warp = WarpsInventory.getWarp(event.currentItem.itemMeta.displayName.substring(2))
+        if (event.currentItem != warp?.getItem()) return
+        humanEntity.teleport(warp?.location)
     }
 
     @EventHandler
@@ -82,7 +81,6 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 }
             }
             event.message == "FINISH" -> {
-//                WarpsInventory.remove(createWarp.uuid)
                 for (i in 0 until createWarp.lore.size) {
                     createWarp.lore[i] = createWarp.lore[i].replace('&', '§')
                 }
