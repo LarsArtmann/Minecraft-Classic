@@ -25,9 +25,9 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
-        if (event.clickedInventory == null
-                || event.clickedInventory.name == null
-                || event.clickedInventory.name != "§9Shops") return
+        if (event.inventory == null
+                || event.inventory.title == null
+                || event.inventory.title != "§9Shops") return
         cancel(event)
         val humanEntity = event.whoClicked
         if (event.slot == 49) {
