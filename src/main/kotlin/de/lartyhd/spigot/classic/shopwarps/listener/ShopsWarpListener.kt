@@ -28,10 +28,15 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
         val humanEntity = event.whoClicked
         if (event.clickedInventory == null
                 || event.clickedInventory.name == null
-                || !event.clickedInventory.name.equals("§9Shop")) {
+                || event.clickedInventory.name != "§9Shop") {
             cancel(event)
             if (event.slot == 49) {
-                config[humanEntity as Player] = NullWarp(humanEntity.uniqueId, humanEntity.location)
+                humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
+                if (config[humanEntity as Player] != null) {
+                    humanEntity.sendMessage("§cDu bist schon am erstellen eines Shops")
+                    return
+                }
+                config[humanEntity] = NullWarp(humanEntity.uniqueId, humanEntity.location)
                 humanEntity.sendMessage("§aGib dein Namen des Shops ein:")
                 humanEntity.closeInventory()
                 return
@@ -53,6 +58,10 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
         cancel(event)
         val createWarp: NullWarp = config[player]!!
         when {
+            event.message == "CANCEL" -> {
+                config.remove(player)
+                player.sendMessage("§4ShopWarp erstellen / überschreiben abgebrochen")
+            }
             createWarp.name == null -> {
                 createWarp.name = event.message
                 player.sendMessage("§aDer Name wurde gesetzt.")
@@ -71,11 +80,12 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                     player.sendMessage("§cNur Zahlen! Noch mal:")
                 }
             }
-            createWarp.name.equals("FINISH") -> {
+            event.message == "FINISH" -> {
                 WarpsInventory.remove(createWarp.uuid)
                 WarpsInventory.warps.add(SimpleWarp(createWarp.uuid, createWarp.location!!, createWarp.material!!, createWarp.lore, createWarp.name!!))
                 config.remove(player)
                 WarpsInventory.updateWarps()
+                player.sendMessage("§bDein ShopWarp wurde erstellt")
             }
             else -> {
                 createWarp.lore.add(event.message)
