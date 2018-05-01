@@ -33,7 +33,6 @@ object WarpsInventory {
         inventory = InventoryBuilder(54, "§9Shops").fillWith(glass, 0, 8).fillWith(glass, 45, 53).setItem(4, ItemBuilder(Material.SIGN).setName("§9Infos").setLore(listOf(" ", "§7Von §bLars Artmann §8| §bLartyHD", "§7für §bClassic §7programmiert", "", "§7Danke an Terra für das coole §bProjekt")).build()).setItem(49, ItemBuilder(Material.NETHER_STAR).setName("§9Setze deinen eigenen Warp").addLore("§7Setzt den Warp auf deine aktuelle Location").build())
         getConfig()
         updateWarps()
-
     }
 
     fun remove(uuid: UUID) {
@@ -63,8 +62,8 @@ object WarpsInventory {
                 val warp = warps[i]
                 val locationPrefix = "shops.$i.location."
                 val location = warp.location
-                conf.set("shops.$i.uuid", warp.uuid)
-                conf.set("${locationPrefix}world", location?.world)
+                conf.set("shops.$i.uuid", warp.uuid.toString())
+                conf.set("${locationPrefix}world", location?.world?.name)
                 conf.set("${locationPrefix}X", location?.x)
                 conf.set("${locationPrefix}Y", location?.y)
                 conf.set("${locationPrefix}Z", location?.z)
@@ -74,6 +73,7 @@ object WarpsInventory {
                 conf.set("shops.$i.lore", warp.lore)
                 conf.set("shops.$i.name", warp.name)
             }
+            conf.save(conf.file)
         }))
         if (conf.get("shops") != null) for (i in 0..Int.MAX_VALUE) {
             if (conf.get("shops.$i") == null) return
@@ -86,5 +86,5 @@ object WarpsInventory {
             warps.add(SimpleWarp(uuid, location, material, lore, name))
         }
     }
-    
+
 }
