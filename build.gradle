@@ -26,11 +26,14 @@ repositories {
     }
 }
 
+
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '0.11.91.1'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
-//    compile 'org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT'
 }
 
 compileKotlin {
@@ -38,4 +41,10 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'C:\\Users\\LartyHD\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib-jdk8\\1.2.41\\5e34ca185bbea7452d704ed3537a22314a809383\\kotlin-stdlib-jdk8-1.2.41.jar!\\META-INF\\MANIFEST.MF'
+    }
 }

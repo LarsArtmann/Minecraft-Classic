@@ -32,6 +32,10 @@ object WarpsInventory {
         if (conf.get("shops") != null)
             warps.addAll(conf.get("shops") as MutableList<Warp>)
         updateWarps()
+        Runtime.getRuntime().addShutdownHook(Thread({
+            conf.set("spawns", warps)
+            conf.save(conf.file)
+        }))
     }
 
     fun remove(uuid: UUID) {
