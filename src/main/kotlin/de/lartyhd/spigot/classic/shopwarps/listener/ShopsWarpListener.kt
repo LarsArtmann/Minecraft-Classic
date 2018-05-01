@@ -82,11 +82,11 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 }
             }
             event.message == "FINISH" -> {
-                WarpsInventory.remove(createWarp.uuid)
+//                WarpsInventory.remove(createWarp.uuid)
                 for (i in 0 until createWarp.lore.size) {
                     createWarp.lore[i] = createWarp.lore[i].replace('&', '§')
                 }
-                WarpsInventory.warps.add(SimpleWarp(createWarp.uuid, createWarp.location!!, createWarp.material!!, createWarp.lore, createWarp.name!!))
+                WarpsInventory.add(SimpleWarp(createWarp.uuid, createWarp.location!!, createWarp.material!!, createWarp.lore, createWarp.name!!))
                 config.remove(player)
                 WarpsInventory.updateWarps()
                 player.sendMessage("§bDein ShopWarp wurde erstellt")

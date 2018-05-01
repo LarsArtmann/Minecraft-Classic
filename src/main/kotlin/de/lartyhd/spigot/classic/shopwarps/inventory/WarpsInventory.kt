@@ -26,7 +26,7 @@ import java.util.*
 object WarpsInventory {
 
     private val inventory: InventoryBuilder
-    val warps: MutableList<Warp> = ArrayList()
+    private val warps: MutableList<Warp> = ArrayList()
 
     init {
         val glass = ItemBuilder(Material.STAINED_GLASS_PANE, 7.toShort()).setName("§0").build()
@@ -35,9 +35,9 @@ object WarpsInventory {
         updateWarps()
     }
 
-    @Synchronized
-    fun remove(uuid: UUID) {
-        for (warp in warps) if (warp.uuid == uuid) warps.remove(warp)
+    fun add(pWarp: Warp) {
+        for (warp in ArrayList(warps)) if (warp.uuid == pWarp.uuid) warps.remove(warp)
+        warps.add(pWarp)
     }
 
     fun updateWarps() {
