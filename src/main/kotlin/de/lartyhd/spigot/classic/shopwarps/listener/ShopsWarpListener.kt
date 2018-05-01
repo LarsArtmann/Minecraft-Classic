@@ -69,15 +69,20 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
             }
             createWarp.material == null -> {
                 try {
-                    val material = Material.getMaterial(event.message.toInt())
-                    createWarp.material = if (material == Material.AIR) Material.STONE else material
+//                    val split = event.message.split(":")
+//                    var subID = 0
+//                    if (split.size == 2) subID = split[1].toInt()
+//                    var material = Material.getMaterial(split[0].toInt())
+                    var material = Material.getMaterial(event.message.toInt())
+                    if (material == null || material == Material.AIR) material = Material.STONE
+                    createWarp.material = material
                     player.sendMessage("§aDas Material wurde auf ${createWarp.material} gesetzt")
                     player.sendMessage("§aJetzt gebe bitte eine Beschreibung deines Shops ab")
                     player.sendMessage("§aMit jeder Nachricht die du jetzt ein gibt fügst du eine weitere Line hinzu")
                     player.sendMessage("§aUm den Shop jetzt zu erstellen einfach \"FINISH\" in den Chat schreiben")
                     player.sendMessage("§cAchtung: \"FINISH\" muss in CAPS geschrieben werden und du kannst Colorcodes nutzen (mit &):")
                 } catch (ex: ClassCastException) {
-                    player.sendMessage("§cNur Zahlen! Noch mal:")
+                    player.sendMessage("§cNur Zahlen! ID "/*oder ID:SUB_ID*/)
                 }
             }
             event.message == "FINISH" -> {
