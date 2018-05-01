@@ -1,0 +1,6 @@
+name: ShopWarps
+version: 1.0
+main: de.lartyhd.spigot.classic.shopwarps.ShopWarps
+author: Lars Artmann | LartyHD
+commands:
+    shops:
