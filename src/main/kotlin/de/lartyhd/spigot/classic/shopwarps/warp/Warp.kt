@@ -7,6 +7,7 @@ package de.lartyhd.spigot.classic.shopwarps.warp
 import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import org.bukkit.Location
 import org.bukkit.Material
+import java.util.*
 
 /**
  * @author Lars Artmann | LartyHD
@@ -14,10 +15,10 @@ import org.bukkit.Material
  * Last edit 01.05.2018
  */
 interface Warp {
-
+    val uuid: UUID
     val location: Location?
     val material: Material?
-    val lore: List<String>?
+    val lore: MutableList<String>?
     val name: String?
 
     fun getItem() = ItemBuilder(material!!).setLore(lore!!).setName("§9$name").build()

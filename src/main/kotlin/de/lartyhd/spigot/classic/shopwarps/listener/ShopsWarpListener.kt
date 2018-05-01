@@ -31,9 +31,9 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 || event.clickedInventory.name != "§9Shop") {
             cancel(event)
             if (event.slot == 49) {
-//                WarpsInventory.warps.add(SimpleWarp(event.whoClicked.location, ))
-                config[humanEntity as Player] = NullWarp(humanEntity.location)
+                config[humanEntity as Player] = NullWarp(humanEntity.uniqueId, humanEntity.location)
                 humanEntity.sendMessage("§aGib dein Namen des Shops ein:")
+                humanEntity.closeInventory()
                 return
             }
             if (event.slot < 9 || event.slot > 44
@@ -72,8 +72,14 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 }
             }
             createWarp.name == "FINISH" -> {
-                WarpsInventory.warps.add(SimpleWarp(createWarp.location!!, createWarp.material!!, if (createWarp.lore == null) listOf() else createWarp.lore!!, createWarp.name!!))
+                WarpsInventory.remove(createWarp.uuid)
+                WarpsInventory.warps.add(SimpleWarp(createWarp.uuid, createWarp.location!!, createWarp.material!!, createWarp.lore, createWarp.name!!))
                 config.remove(player)
+                WarpsInventory.updateWarps()
+            }
+            else -> {
+                createWarp.lore.add(event.message)
+                player.sendMessage("§aDeine Line wurde gespeichert.")
             }
         }
         config[player] = createWarp
