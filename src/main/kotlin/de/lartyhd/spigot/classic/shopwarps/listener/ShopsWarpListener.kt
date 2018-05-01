@@ -32,8 +32,10 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
             cancel(event)
             if (event.slot == 49) {
                 humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
+                println(config[humanEntity as Player])
                 if (config[humanEntity as Player] != null) {
                     humanEntity.sendMessage("§cDu bist schon am erstellen eines Shops")
+                    humanEntity.closeInventory()
                     return
                 }
                 config[humanEntity] = NullWarp(humanEntity.uniqueId, humanEntity.location)
@@ -95,6 +97,5 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 player.sendMessage("§aDeine Line wurde gespeichert.")
             }
         }
-        config[player] = createWarp
     }
 }
