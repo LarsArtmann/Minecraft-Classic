@@ -13,4 +13,4 @@ import java.util.*
  * Created by Lars Artmann | LartyHD on 01.05.2018 12:13.
  * Last edit 01.05.2018
  */
-class NullWarp(override var uuid: UUID, override var location: Location? = null, override var material: Material? = null, override var lore: MutableList<String> = mutableListOf(), override var name: String? = null) : Warp
+data class NullWarp(override var uuid: UUID, override var location: Location? = null, override var material: Material? = null, override var lore: MutableList<String> = mutableListOf(), override var name: String? = null) : Warp

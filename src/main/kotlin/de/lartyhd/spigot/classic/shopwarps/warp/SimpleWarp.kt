@@ -13,4 +13,4 @@ import java.util.*
  * Created by Lars Artmann | LartyHD on 01.05.2018 12:13.
  * Last edit 01.05.2018
  */
-class SimpleWarp(override val uuid: UUID, override val location: Location, override val material: Material, override val lore: MutableList<String>, override val name: String) : Warp
+data class SimpleWarp(override val uuid: UUID, override val location: Location, override val material: Material, override val lore: MutableList<String>, override val name: String) : Warp
