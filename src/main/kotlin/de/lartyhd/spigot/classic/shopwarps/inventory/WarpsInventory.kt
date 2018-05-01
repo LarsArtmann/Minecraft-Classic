@@ -78,7 +78,7 @@ object WarpsInventory {
         if (conf.get("shops") != null) for (i in 0..Int.MAX_VALUE) {
             if (conf.get("shops.$i") == null) return
             val locationPrefix = "shops.$i.location."
-            val uuid: UUID = conf.get("shops.$i.uuid") as UUID
+            val uuid: UUID = UUID.fromString(conf.getString("shops.$i.uuid"))
             val location = Location(Bukkit.getWorld(conf.getString("${locationPrefix}world")), conf.getDouble("${locationPrefix}X"), conf.getDouble("${locationPrefix}Y"), conf.getDouble("${locationPrefix}Z"), conf.getDouble("${locationPrefix}Yaw").toFloat(), conf.getDouble("${locationPrefix}Pitch").toFloat())
             val material: Material = Material.getMaterial(conf.getInt("shops.$i.material"))
             val lore: MutableList<String> = conf.getStringList("shops.$i.lore")
