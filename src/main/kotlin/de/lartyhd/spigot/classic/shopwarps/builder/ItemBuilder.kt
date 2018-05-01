@@ -83,6 +83,7 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun addLore(lore: List<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
+        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
         itemMeta.lore.addAll(lore)
         itemMeta.lore = itemMeta.lore
         itemStack.itemMeta = itemMeta
@@ -91,6 +92,7 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun addLore(i: Int, lore: List<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
+        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
         itemMeta.lore.addAll(i, lore)
         itemMeta.lore = itemMeta.lore
         itemStack.itemMeta = itemMeta
@@ -99,6 +101,7 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun addLore(lore: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
+        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
         itemMeta.lore.add(lore)
         itemMeta.lore = itemMeta.lore
         itemStack.itemMeta = itemMeta
@@ -107,6 +110,7 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun addLore(i: Int, lore: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
+        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
         itemMeta.lore.add(i, lore)
         itemMeta.lore = itemMeta.lore
         itemStack.itemMeta = itemMeta
@@ -122,6 +126,7 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun removeLore(lore: List<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
+        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
         itemMeta.lore.removeAll(lore)
         itemMeta.lore = itemMeta.lore
         itemStack.itemMeta = itemMeta
@@ -130,6 +135,7 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun removeLore(i: Int): ItemBuilder {
         val itemMeta = itemStack.itemMeta
+        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
         itemMeta.lore.removeAt(i)
         itemMeta.lore = itemMeta.lore
         itemStack.itemMeta = itemMeta

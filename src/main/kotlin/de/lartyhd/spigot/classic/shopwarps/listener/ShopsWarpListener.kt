@@ -28,7 +28,7 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
         val humanEntity = event.whoClicked
         if (event.clickedInventory == null
                 || event.clickedInventory.name == null
-                || event.clickedInventory.name != "§9Shop") {
+                || !event.clickedInventory.name.equals("§9Shop")) {
             cancel(event)
             if (event.slot == 49) {
                 config[humanEntity as Player] = NullWarp(humanEntity.uniqueId, humanEntity.location)
@@ -65,13 +65,13 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                     player.sendMessage("§aDas Material wurde auf ${createWarp.material} gesetzt")
                     player.sendMessage("§aJetzt gebe bitte eine Beschreibung deines Shops ab")
                     player.sendMessage("§aMit jeder Nachricht die du jetzt ein gibt fügst du eine weitere Line hinzu")
-                    player.sendMessage("§aUm den Spawnpoint jetzt zu erstellen einfach \"FINISH\" in den Chat schreiben")
+                    player.sendMessage("§aUm den Shop jetzt zu erstellen einfach \"FINISH\" in den Chat schreiben")
                     player.sendMessage("§cAchtung: \"FINISH\" muss in CAPS geschrieben werden:")
                 } catch (ex: ClassCastException) {
                     player.sendMessage("§cNur Zahlen! Noch mal:")
                 }
             }
-            createWarp.name == "FINISH" -> {
+            createWarp.name.equals("FINISH") -> {
                 WarpsInventory.remove(createWarp.uuid)
                 WarpsInventory.warps.add(SimpleWarp(createWarp.uuid, createWarp.location!!, createWarp.material!!, createWarp.lore, createWarp.name!!))
                 config.remove(player)
