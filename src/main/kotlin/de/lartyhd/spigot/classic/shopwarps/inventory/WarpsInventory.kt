@@ -35,6 +35,7 @@ object WarpsInventory {
         updateWarps()
     }
 
+    @Synchronized
     fun remove(uuid: UUID) {
         for (warp in warps) if (warp.uuid == uuid) warps.remove(warp)
     }
