@@ -48,7 +48,7 @@ object WarpsInventory {
 
     fun updateWarps() {
         inventory.fillWith(ItemStack(Material.AIR), 9, 44)
-        for (i in 9 until warps.size + 9) inventory.setItem(i, warps[i].getItem())
+        for (i in 9 until warps.size + 9) inventory.setItem(i, warps[i - 9].getItem())
     }
 
     fun getWarp(name: String): Warp? {
