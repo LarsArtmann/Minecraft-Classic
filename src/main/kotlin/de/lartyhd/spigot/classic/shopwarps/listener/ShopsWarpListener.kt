@@ -75,13 +75,16 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                     player.sendMessage("§aJetzt gebe bitte eine Beschreibung deines Shops ab")
                     player.sendMessage("§aMit jeder Nachricht die du jetzt ein gibt fügst du eine weitere Line hinzu")
                     player.sendMessage("§aUm den Shop jetzt zu erstellen einfach \"FINISH\" in den Chat schreiben")
-                    player.sendMessage("§cAchtung: \"FINISH\" muss in CAPS geschrieben werden:")
+                    player.sendMessage("§cAchtung: \"FINISH\" muss in CAPS geschrieben werden und du kannst Colorcodes nutzen (mit &):")
                 } catch (ex: ClassCastException) {
                     player.sendMessage("§cNur Zahlen! Noch mal:")
                 }
             }
             event.message == "FINISH" -> {
                 WarpsInventory.remove(createWarp.uuid)
+                for (i in 0 until createWarp.lore.size) {
+                    createWarp.lore[i] = createWarp.lore[i].replace('&', '§')
+                }
                 WarpsInventory.warps.add(SimpleWarp(createWarp.uuid, createWarp.location!!, createWarp.material!!, createWarp.lore, createWarp.name!!))
                 config.remove(player)
                 WarpsInventory.updateWarps()
