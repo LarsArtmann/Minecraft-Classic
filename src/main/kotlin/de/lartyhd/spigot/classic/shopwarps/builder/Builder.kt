@@ -1,7 +1,7 @@
 /*
- * © Copyright - Lars Artmann | LartyHD 2018.
+ * © Copyright - Lars Artmann aka. LartyHD 2018.
  */
-package net.darkblocks.dark.kotlin.builder
+package de.lartyhd.spigot.classic.shopwarps.builder
 
 /**
  * @author Lars Artmann | LartyHD
