@@ -37,7 +37,7 @@ object WarpsInventory {
                                 "§7Von §bLars Artmann §8| §bLartyHD",
                                 "§7für §bClassic §7programmiert",
                                 "",
-                                "§7Danke an §bTerra §7und §bAyumu für das coole §bProjekt"
+                                "§7Danke an §bTerra §7und §bAyumu §7für das coole §bProjekt"
                         ))
                         .build())
                 .setItem(46, ItemBuilder(Material.INK_SACK, 1.toShort())
