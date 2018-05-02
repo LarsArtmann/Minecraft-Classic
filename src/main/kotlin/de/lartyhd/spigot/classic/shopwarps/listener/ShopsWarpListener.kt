@@ -51,27 +51,25 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 || event.inventory.title != "§9Shops") return
         cancel(event)
         val humanEntity = event.whoClicked
-
-        if (event.slot == 52) {
-            humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
-            if (config[humanEntity as Player] != null) {
-                humanEntity.sendMessage("§cDu bist schon am erstellen eines Shops")
-                humanEntity.closeInventory()
-                return
+        if (event.slot == 52 || event.slot == 46 || (event.slot in 9..44)) humanEntity.closeInventory()
+        when {
+            event.slot == 52 -> {
+                humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
+                if (config[humanEntity as Player] != null) humanEntity.sendMessage("§cDu bist schon am erstellen eines Shops") else {
+                    config[humanEntity] = NullWarp(humanEntity.uniqueId, humanEntity.location)
+                    humanEntity.sendMessage("§eGib dein Namen des Shops ein:")
+                }
             }
-            config[humanEntity] = NullWarp(humanEntity.uniqueId, humanEntity.location)
-            humanEntity.sendMessage("§eGib dein Namen des Shops ein:")
-            humanEntity.closeInventory()
-            return
+            event.slot == 46 -> {
+                WarpsInventory.remove(humanEntity.uniqueId)
+                WarpsInventory.updateWarps()
+                humanEntity.sendMessage("§bDein ShopWarp wurde gelöscht")
+            }
+            event.slot < 9 || event.slot > 44
+                    || event.currentItem == null
+                    || event.currentItem.itemMeta == null
+                    || event.currentItem.itemMeta.displayName == null -> return
         }
-        if (event.slot == 46) {
-            WarpsInventory.remove(humanEntity.uniqueId)
-            humanEntity.sendMessage("§bDein ShopWarp wurde gelöscht")
-        }
-        if (event.slot < 9 || event.slot > 44
-                || event.currentItem == null
-                || event.currentItem.itemMeta == null
-                || event.currentItem.itemMeta.displayName == null) return
         val warp = WarpsInventory.getWarp(event.currentItem.itemMeta.displayName.substring(2))
         if (event.currentItem != warp?.getItem()) return
         humanEntity.teleport(warp?.location)

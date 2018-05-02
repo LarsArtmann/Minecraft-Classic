@@ -25,6 +25,6 @@ class ShopWarps : JavaPlugin() {
     }
 
     override fun onDisable() {
-        configManager.addWarps(WarpsInventory.warps)
+        configManager.setWarps(WarpsInventory.warps)
     }
 }

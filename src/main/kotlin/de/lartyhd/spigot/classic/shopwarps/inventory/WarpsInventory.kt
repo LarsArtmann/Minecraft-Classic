@@ -55,13 +55,13 @@ object WarpsInventory {
         for (warp in ArrayList(warps)) if (warp.uuid == uuid) warps.remove(warp)
     }
 
-    fun add(pWarp: Warp) {
-        remove(pWarp.uuid)
-        warps.add(pWarp)
+    fun add(warp: Warp) {
+        remove(warp.uuid)
+        warps.add(warp)
     }
 
     fun updateWarps() {
-        inventory.fillWith(ItemStack(Material.AIR), 9, 44)
+        inventory.replaceWith(ItemStack(Material.AIR), 9, 44)
         for (i in 9 until warps.size + 9) inventory.setItem(i, warps[i - 9].getItem())
     }
 
@@ -71,6 +71,4 @@ object WarpsInventory {
     }
 
     fun openInventory(humanEntity: HumanEntity): InventoryView = humanEntity.openInventory(inventory.build())
-
-
 }
