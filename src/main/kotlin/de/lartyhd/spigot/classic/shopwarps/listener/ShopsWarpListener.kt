@@ -8,6 +8,7 @@ import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory
 import de.lartyhd.spigot.classic.shopwarps.warp.NullWarp
 import de.lartyhd.spigot.classic.shopwarps.warp.SimpleWarp
 import org.bukkit.Material
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -22,6 +23,26 @@ import org.bukkit.plugin.java.JavaPlugin
 class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 
     private val config: MutableMap<Player, NullWarp> = HashMap()
+    private val blockedMaterials = listOf(
+            Material.AIR,
+            Material.STATIONARY_WATER,
+            Material.WATER,
+            Material.STATIONARY_LAVA,
+            Material.LAVA,
+            Material.getMaterial(34),
+            Material.FIRE,
+            Material.REDSTONE_WIRE,
+            Material.WHEAT,
+            Material.BURNING_FURNACE,
+            Material.SIGN_POST,
+            Material.WALL_SIGN,
+            Material.GLOWING_REDSTONE_ORE,
+            Material.REDSTONE_LAMP_OFF,
+            Material.PORTAL,
+            Material.getMaterial(93),
+            Material.getMaterial(94),
+            Material.STANDING_BANNER
+    )
 
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
@@ -30,7 +51,8 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 || event.inventory.title != "§9Shops") return
         cancel(event)
         val humanEntity = event.whoClicked
-        if (event.slot == 49) {
+
+        if (event.slot == 52) {
             humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
             if (config[humanEntity as Player] != null) {
                 humanEntity.sendMessage("§cDu bist schon am erstellen eines Shops")
@@ -38,9 +60,13 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 return
             }
             config[humanEntity] = NullWarp(humanEntity.uniqueId, humanEntity.location)
-            humanEntity.sendMessage("§aGib dein Namen des Shops ein:")
+            humanEntity.sendMessage("§eGib dein Namen des Shops ein:")
             humanEntity.closeInventory()
             return
+        }
+        if (event.slot == 46) {
+            WarpsInventory.remove(humanEntity.uniqueId)
+            humanEntity.sendMessage("§bDein ShopWarp wurde gelöscht")
         }
         if (event.slot < 9 || event.slot > 44
                 || event.currentItem == null
@@ -64,35 +90,27 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
             }
             createWarp.name == null -> {
                 createWarp.name = event.message
-                player.sendMessage("§aDer Name wurde gesetzt.")
-                player.sendMessage("§aGib die ID des DisplayBlocks ein:")
+                player.run {
+                    sendMessage("§aDer Name wurde gesetzt.")
+                    sendMessage("§eGib die ID des DisplayBlocks ein:")
+                }
             }
             createWarp.material == null -> {
-                try {
-//                    val split = event.message.split(":")
-//                    var subID = 0
-//                    if (split.size == 2) subID = split[1].toInt()
-//                    var material = Material.getMaterial(split[0].toInt())
-                    var material = Material.getMaterial(event.message.toInt())
-                    if (material == null || material == Material.AIR) material = Material.STONE
+                val material = getMaterialByID(event.message, player)
+                if (material == null) player.sendMessage("§cEs ist ein Fehler aufgetreten. Bitte gebe noch mal die Material ID eingebe") else {
                     createWarp.material = material
-                    player.sendMessage("§aDas Material wurde auf ${createWarp.material} gesetzt")
-                    player.sendMessage("§aJetzt gebe bitte eine Beschreibung deines Shops ab")
-                    player.sendMessage("§aMit jeder Nachricht die du jetzt ein gibt fügst du eine weitere Line hinzu")
-                    player.sendMessage("§aUm den Shop jetzt zu erstellen einfach \"FINISH\" in den Chat schreiben")
-                    player.sendMessage("§cAchtung: \"FINISH\" muss in CAPS geschrieben werden und du kannst Colorcodes nutzen (mit &):")
-                } catch (ex: ClassCastException) {
-                    player.sendMessage("§cNur Zahlen! ID "/*oder ID:SUB_ID*/)
+                    player.run {
+                        sendMessage("§aDas Material wurde auf ${createWarp.material} gesetzt.")
+                        sendMessage("§eJetzt gebe bitte eine Beschreibung deines Shops ab.")
+                        sendMessage("§eMit jeder Nachricht die du jetzt ein gibt fügst du eine weitere Line hinzu.")
+                        sendMessage("§eUm den Shop jetzt zu erstellen einfach \"FINISH\" in den Chat schreiben.")
+                        sendMessage("§6Achtung: \"FINISH\" muss in CAPS geschrieben werden und du kannst Colorcodes nutzen (mit &):")
+                    }
                 }
             }
             event.message == "FINISH" -> {
-//                WarpsInventory.remove(createWarp.uuid)
-                for (i in 0 until createWarp.lore.size) {
-                    createWarp.lore[i] = createWarp.lore[i].replace('&', '§')
-                }
-                WarpsInventory.add(SimpleWarp(createWarp.uuid, createWarp.location!!, createWarp.material!!, createWarp.lore, createWarp.name!!))
+                addWarp(createWarp)
                 config.remove(player)
-                WarpsInventory.updateWarps()
                 player.sendMessage("§bDein ShopWarp wurde erstellt")
             }
             else -> {
@@ -100,5 +118,31 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 player.sendMessage("§aDeine Line wurde gespeichert.")
             }
         }
+    }
+
+    private fun getMaterialByID(id: String, sender: CommandSender): Material? {
+        return try {
+//                    val split = event.message.split(":")
+//                    var subID = 0
+//                    if (split.size == 2) subID = split[1].toInt()
+//                    var material = Material.getMaterial(split[0].toInt())
+            val material: Material? = Material.getMaterial(id.toInt()) ?: return null
+            for (blockedMaterial in blockedMaterials) {
+                if (blockedMaterial == material) {
+                    sender.sendMessage("§cDieses Material ist verboten :(")
+                    return null
+                }
+            }
+            material
+        } catch (ex: NumberFormatException) {
+            sender.sendMessage("§cNur Zahlen!"/* ID oder ID:SUB_ID*/)
+            null
+        }
+    }
+
+    private fun addWarp(warp: NullWarp) {
+        for (i in 0 until warp.lore.size) warp.lore[i] = warp.lore[i].replace('&', '§')
+        WarpsInventory.add(SimpleWarp(warp.uuid, warp.location!!, warp.material!!, warp.lore, warp.name!!))
+        WarpsInventory.updateWarps()
     }
 }

@@ -5,6 +5,7 @@
 package de.lartyhd.spigot.classic.shopwarps
 
 import de.lartyhd.spigot.classic.shopwarps.commands.ShopsCommand
+import de.lartyhd.spigot.classic.shopwarps.config.ConfigManager
 import de.lartyhd.spigot.classic.shopwarps.listener.ShopsWarpListener
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -16,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class ShopWarps : JavaPlugin() {
 
     override fun onEnable() {
+        ConfigManager(dataFolder, "shops.yml")
         ShopsCommand(this)
         ShopsWarpListener(this)
     }
