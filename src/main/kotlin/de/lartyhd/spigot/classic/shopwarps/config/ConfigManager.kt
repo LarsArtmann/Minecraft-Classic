@@ -12,7 +12,7 @@ import org.bukkit.Material
 import java.io.File
 import java.util.*
 
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 02.05.2018 13:33.
@@ -27,7 +27,6 @@ class ConfigManager(val folder: File, fileName: String) {
         if (!folder.exists()) folder.mkdirs()
         if (!file.exists()) file.createNewFile()
     }
-
 
     fun addWarps(warps: MutableList<Warp>) {
         if (conf.get("shops") != null) for (i in 0..Int.MAX_VALUE) {
@@ -60,4 +59,5 @@ class ConfigManager(val folder: File, fileName: String) {
         }
         conf.save(conf.file)
     }
+
 }

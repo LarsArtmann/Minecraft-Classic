@@ -6,6 +6,7 @@ package de.lartyhd.spigot.classic.shopwarps
 
 import de.lartyhd.spigot.classic.shopwarps.commands.ShopsCommand
 import de.lartyhd.spigot.classic.shopwarps.config.ConfigManager
+import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory
 import de.lartyhd.spigot.classic.shopwarps.listener.ShopsWarpListener
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -16,9 +17,14 @@ import org.bukkit.plugin.java.JavaPlugin
  */
 class ShopWarps : JavaPlugin() {
 
+    val configManager = ConfigManager(dataFolder, "shops.yml")
+
     override fun onEnable() {
-        ConfigManager(dataFolder, "shops.yml")
         ShopsCommand(this)
         ShopsWarpListener(this)
+    }
+
+    override fun onDisable() {
+        configManager.addWarps(WarpsInventory.warps)
     }
 }
