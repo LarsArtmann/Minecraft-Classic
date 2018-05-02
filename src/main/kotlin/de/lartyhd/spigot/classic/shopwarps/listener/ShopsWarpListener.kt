@@ -86,7 +86,10 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 config.remove(player)
                 player.sendMessage("§4ShopWarp erstellen / überschreiben abgebrochen")
             }
-            createWarp.name == null -> {
+            createWarp.name == null -> if (WarpsInventory.getWarp(event.message) != null) {
+                player.sendMessage("§cDen Namen hat leider schon ein anderer Shop :(.")
+                return
+            } else {
                 createWarp.name = event.message
                 player.run {
                     sendMessage("§aDer Name wurde gesetzt.")
