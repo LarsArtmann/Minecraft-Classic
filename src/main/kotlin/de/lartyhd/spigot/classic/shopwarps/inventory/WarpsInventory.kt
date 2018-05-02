@@ -4,7 +4,6 @@
 
 package de.lartyhd.spigot.classic.shopwarps.inventory
 
-import de.lartyhd.spigot.classic.shopwarps.ShopWarps
 import de.lartyhd.spigot.classic.shopwarps.builder.InventoryBuilder
 import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import de.lartyhd.spigot.classic.shopwarps.warp.Warp
@@ -12,7 +11,6 @@ import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
 /**
@@ -47,8 +45,6 @@ object WarpsInventory {
                         .setName("§9Setze deinen eigenen Warp")
                         .addLore("§7Setzt den Warp auf deine aktuelle Location")
                         .build())
-        JavaPlugin.getPlugin(ShopWarps::class.java).configManager.addWarps(warps)
-        updateWarps()
     }
 
     fun remove(uuid: UUID) {
@@ -58,6 +54,7 @@ object WarpsInventory {
     fun add(warp: Warp) {
         remove(warp.uuid)
         warps.add(warp)
+        updateWarps()
     }
 
     fun updateWarps() {
