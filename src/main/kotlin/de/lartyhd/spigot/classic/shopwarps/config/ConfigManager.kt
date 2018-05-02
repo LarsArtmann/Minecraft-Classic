@@ -21,11 +21,12 @@ import java.util.*
 class ConfigManager(val folder: File, fileName: String) {
 
     val file: File = File(folder, fileName)
-    val conf = Configuration(file)
+    val conf: Configuration
 
     init {
         if (!folder.exists()) folder.mkdirs()
         if (!file.exists()) file.createNewFile()
+        conf = Configuration(file)
     }
 
     fun addWarps(warps: MutableList<Warp>) {
