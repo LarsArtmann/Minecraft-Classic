@@ -21,6 +21,7 @@ class ShopWarps : JavaPlugin() {
 
     override fun onEnable() {
         configManager.addWarps(WarpsInventory.warps)
+        WarpsInventory.updateWarps()
         ShopsCommand(this)
         ShopsWarpListener(this)
     }

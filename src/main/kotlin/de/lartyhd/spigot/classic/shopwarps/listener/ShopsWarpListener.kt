@@ -51,7 +51,7 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 || event.inventory.title != "§9Shops") return
         cancel(event)
         val humanEntity = event.whoClicked
-        if (event.slot == 52 || event.slot == 46 || (event.slot in 9..44)) humanEntity.closeInventory()
+        if (event.slot == 52 || event.slot == 46 || (event.slot in 9..44) && event.currentItem != null) humanEntity.closeInventory()
         when {
             event.slot == 52 -> {
                 humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
