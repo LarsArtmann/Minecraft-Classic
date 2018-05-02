@@ -86,7 +86,9 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 config.remove(player)
                 player.sendMessage("§4ShopWarp erstellen / überschreiben abgebrochen")
             }
-            createWarp.name == null -> if (WarpsInventory.getWarp(event.message) != null) {
+            createWarp.name == null -> {
+                val warp = WarpsInventory.getWarp(event.message)
+                if (warp != null && warp.uuid != player.uniqueId) {
                 player.sendMessage("§cDen Namen hat leider schon ein anderer Shop :(.")
                 return
             } else {
@@ -94,6 +96,7 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
                 player.run {
                     sendMessage("§aDer Name wurde gesetzt.")
                     sendMessage("§eGib die ID des DisplayBlocks ein:")
+                }
                 }
             }
             createWarp.material == null -> {
