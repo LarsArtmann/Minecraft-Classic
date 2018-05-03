@@ -4,6 +4,7 @@
 
 package de.lartyhd.spigot.classic.shopwarps.listener
 
+import de.lartyhd.spigot.classic.shopwarps.ShopWarps
 import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory
 import de.lartyhd.spigot.classic.shopwarps.warp.NullWarp
 import de.lartyhd.spigot.classic.shopwarps.warp.SimpleWarp
@@ -89,14 +90,14 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
             createWarp.name == null -> {
                 val warp = WarpsInventory.getWarp(event.message)
                 if (warp != null && warp.uuid != player.uniqueId) {
-                player.sendMessage("§cDen Namen hat leider schon ein anderer Shop :(.")
-                return
-            } else {
-                createWarp.name = event.message
-                player.run {
-                    sendMessage("§aDer Name wurde gesetzt.")
-                    sendMessage("§eGib die ID des DisplayBlocks ein:")
-                }
+                    player.sendMessage("§cDen Namen hat leider schon ein anderer Shop :(.")
+                    return
+                } else {
+                    createWarp.name = event.message
+                    player.run {
+                        sendMessage("§aDer Name wurde gesetzt.")
+                        sendMessage("§eGib die ID des DisplayBlocks ein:")
+                    }
                 }
             }
             createWarp.material == null -> {
@@ -147,6 +148,7 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
     private fun addWarp(warp: NullWarp) {
         for (i in 0 until warp.lore.size) warp.lore[i] = warp.lore[i].replace('&', '§')
         WarpsInventory.add(SimpleWarp(warp.uuid, warp.location!!, warp.material!!, warp.lore, warp.name!!))
+        JavaPlugin.getPlugin(ShopWarps::class.java).configManager.setWarps(WarpsInventory.warps)
         WarpsInventory.updateWarps()
     }
 }

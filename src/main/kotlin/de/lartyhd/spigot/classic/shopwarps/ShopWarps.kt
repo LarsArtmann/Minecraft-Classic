@@ -17,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin
  */
 class ShopWarps : JavaPlugin() {
 
-    private val configManager = ConfigManager(dataFolder, "shops.yml")
+    val configManager = ConfigManager(dataFolder, "shops.yml")
 
     override fun onEnable() {
         configManager.addWarps(WarpsInventory.warps)
@@ -26,7 +26,7 @@ class ShopWarps : JavaPlugin() {
         ShopsWarpListener(this)
     }
 
-    override fun onDisable() {
-        configManager.setWarps(WarpsInventory.warps)
-    }
+//    override fun onDisable() {
+//        configManager.setWarps(WarpsInventory.warps)
+//    }
 }
