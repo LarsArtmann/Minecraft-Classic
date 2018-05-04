@@ -148,7 +148,7 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
     private fun addWarp(warp: NullWarp) {
         for (i in 0 until warp.lore.size) warp.lore[i] = warp.lore[i].replace('&', '§')
         WarpsInventory.add(SimpleWarp(warp.uuid, warp.location!!, warp.material!!, warp.lore, warp.name!!))
-        JavaPlugin.getPlugin(ShopWarps::class.java).configManager.setWarps(WarpsInventory.warps)
+        JavaPlugin.getPlugin(ShopWarps::class.java).injector.configManager.setWarps(WarpsInventory.warps)
         WarpsInventory.updateWarps()
     }
 }
