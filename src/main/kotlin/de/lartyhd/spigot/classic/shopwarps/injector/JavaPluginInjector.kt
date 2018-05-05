@@ -4,7 +4,6 @@
 
 package de.lartyhd.spigot.classic.shopwarps.injector
 
-import de.lartyhd.spigot.classic.shopwarps.Injector
 import de.lartyhd.spigot.classic.shopwarps.commands.ShopsCommand
 import de.lartyhd.spigot.classic.shopwarps.config.ConfigManager
 import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory

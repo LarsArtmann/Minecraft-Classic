@@ -2,7 +2,7 @@
  * © Copyright - Lars Artmann aka. LartyHD 2018.
  */
 
-package de.lartyhd.spigot.classic.shopwarps
+package de.lartyhd.spigot.classic.shopwarps.injector
 
 /**
  * @author Lars Artmann | LartyHD

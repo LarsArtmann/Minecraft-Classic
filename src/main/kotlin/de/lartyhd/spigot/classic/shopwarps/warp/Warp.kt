@@ -7,6 +7,7 @@ package de.lartyhd.spigot.classic.shopwarps.warp
 import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 import java.util.*
 
 /**
@@ -21,6 +22,12 @@ interface Warp {
     val lore: MutableList<String>?
     val name: String?
 
-    fun getItem() = ItemBuilder(material!!).setLore(lore!!).setName("§9$name").build()
+    fun getItem(): ItemStack {
+        if (material == null) throw NullPointerException("material can not be null")
+        if (lore == null) throw NullPointerException("lore can not be null")
+        lore!!.add("")
+        lore!!.add("§aDieser Shop gehört: $uuid")
+        return ItemBuilder(material!!).setLore(lore!!).setName("§9$name").build()
+    }
 
 }
