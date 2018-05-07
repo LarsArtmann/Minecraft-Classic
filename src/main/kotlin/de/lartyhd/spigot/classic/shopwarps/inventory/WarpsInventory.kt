@@ -65,7 +65,6 @@ object WarpsInventory {
             item.itemMeta.lore!!.add("§eDieser Shop gehört: §a${warps[i - 9].uuid}")
             inventory.setItem(i, item)
         }
-        for (content in inventory.build().contents) println(content)
     }
 
     fun getWarp(name: String): Warp? {

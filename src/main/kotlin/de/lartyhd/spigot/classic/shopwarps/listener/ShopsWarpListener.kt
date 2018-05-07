@@ -48,7 +48,6 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
-        println(event.currentItem)
         if (event.inventory == null
                 || event.inventory.title == null
                 || event.inventory.title != "§9Shops") return
