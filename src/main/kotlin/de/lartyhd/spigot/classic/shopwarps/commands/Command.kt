@@ -36,15 +36,7 @@ abstract class Command(val javaPlugin: JavaPlugin,
     }
 
     override fun onCommand(sender: CommandSender, command: org.bukkit.command.Command, s: String, args: Array<String>?): Boolean {
-        if (args == null)
-            perform(sender, emptyArray())
-        else {
-            if (args.size < minLength || args.size > maxLength) {
-                sendUseMessage(sender)
-                return true
-            }
-            perform(sender, args)
-        }
+        if (args == null) perform(sender, emptyArray()) else if (args.size < minLength || args.size > maxLength) sendUseMessage(sender) else perform(sender, args)
         return true
     }
 

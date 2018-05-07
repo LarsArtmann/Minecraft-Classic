@@ -59,7 +59,13 @@ object WarpsInventory {
 
     fun updateWarps() {
         inventory.replaceWith(ItemStack(Material.AIR), 9, 44)
-        for (i in 9 until warps.size + 9) inventory.setItem(i, warps[i - 9].getItem())
+        for (i in 9 until warps.size + 9) {
+            val item = warps[i - 9].getItem()
+            item.itemMeta.lore!!.add("")
+            item.itemMeta.lore!!.add("§eDieser Shop gehört: §a${warps[i - 9].uuid}")
+            inventory.setItem(i, item)
+        }
+        for (content in inventory.build().contents) println(content)
     }
 
     fun getWarp(name: String): Warp? {

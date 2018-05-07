@@ -25,11 +25,12 @@ class ShopsCommand(javaPlugin: JavaPlugin) : Command(
     override fun perform(sender: CommandSender, args: Array<String>) = isPlayer(sender) {
         WarpsInventory.openInventory(it)
         try {
-            if (it.hasPermission("shops.admin.delete") && args.size == 2) {
+            if (args.size == 2)
+                if (it.hasPermission("shops.admin.delete")) {
                 WarpsInventory.remove(UUID.fromString(args[1]))
                 WarpsInventory.updateWarps()
-                sender.sendMessage("§4Du hast den Shop von ${args[1]}")
-            } else sendUseMessage(sender)
+                    sender.sendMessage("§4Du hast den Shop von ${args[1]}")
+                } else sendUseMessage(sender)
         } catch (ex: Exception) {
             sender.sendMessage("§4Es ist ein Fehler aufgetreten")
         }

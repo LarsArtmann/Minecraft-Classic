@@ -61,7 +61,14 @@ class InventoryBuilder(private val inventory: Inventory) : Builder<Inventory> {
     }
 
     fun replaceWith(item: ItemStack, start: Int, end: Int): InventoryBuilder {
-        for (i in start until end + 1) this.inventory.setItem(i, item)
+        println(item)
+        println(start)
+        println(end)
+
+        for (i in start until end + 1) {
+            this.inventory.setItem(i, item)
+            println(i)
+        }
         return this
     }
     override fun build(): Inventory {

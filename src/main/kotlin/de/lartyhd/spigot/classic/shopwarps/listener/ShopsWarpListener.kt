@@ -42,17 +42,19 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
             Material.PORTAL,
             Material.getMaterial(93),
             Material.getMaterial(94),
-            Material.STANDING_BANNER
+            Material.STANDING_BANNER,
+            Material.DOUBLE_STONE_SLAB2
     )
 
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
+        println(event.currentItem)
         if (event.inventory == null
                 || event.inventory.title == null
                 || event.inventory.title != "§9Shops") return
         cancel(event)
         val humanEntity = event.whoClicked
-        if (event.slot == 52 || event.slot == 46 || (event.slot in 9..44) && event.currentItem != null) humanEntity.closeInventory()
+        if ((event.slot == 52 || event.slot == 46 || (event.slot in 9..44)) && event.currentItem != null && event.currentItem.type != Material.AIR) humanEntity.closeInventory()
         when {
             event.slot == 52 -> {
                 humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")

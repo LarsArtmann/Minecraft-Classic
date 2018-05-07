@@ -23,10 +23,7 @@ interface Warp {
     val name: String?
 
     fun getItem(): ItemStack {
-        if (material == null) throw NullPointerException("material can not be null")
         if (lore == null) throw NullPointerException("lore can not be null")
-        lore!!.add("")
-        lore!!.add("§aDieser Shop gehört: $uuid")
         return ItemBuilder(material!!).setLore(lore!!).setName("§9$name").build()
     }
 
