@@ -4,6 +4,7 @@
 
 package de.lartyhd.spigot.classic.shopwarps.config
 
+import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory
 import de.lartyhd.spigot.classic.shopwarps.warp.SimpleWarp
 import de.lartyhd.spigot.classic.shopwarps.warp.Warp
 import org.bukkit.Bukkit
@@ -31,16 +32,17 @@ class ConfigManager(val folder: File, fileName: String) {
 
     fun addWarps(warps: MutableList<Warp>) {
         if (conf.get("shops") != null) for (i in 0..Int.MAX_VALUE) {
-            if (conf.get("shops.$i") == null) return
+            if (conf.get("shops.$i") == null) return //WARNING: Hier ist return richtig und wichtig
             val locationPrefix = "shops.$i.location."
             val uuid: UUID = UUID.fromString(conf.getString("shops.$i.uuid"))
             val location = Location(Bukkit.getWorld(conf.getString("${locationPrefix}world")), conf.getDouble("${locationPrefix}X"), conf.getDouble("${locationPrefix}Y"), conf.getDouble("${locationPrefix}Z"), conf.getDouble("${locationPrefix}Yaw").toFloat(), conf.getDouble("${locationPrefix}Pitch").toFloat())
             val material: Material = Material.getMaterial(conf.getInt("shops.$i.material"))
             val lore: MutableList<String> = conf.getStringList("shops.$i.lore")
             val name: String = conf.getString("shops.$i.name")
-            warps.add(SimpleWarp(uuid, location, material, lore, name))
+            addWarp(warps, SimpleWarp(uuid, location, material, lore, name), uuid)
         }
     }
+
 
     fun setWarps(warps: List<Warp>) {
         for (i in 0 until warps.size) {
@@ -60,5 +62,12 @@ class ConfigManager(val folder: File, fileName: String) {
         }
         conf.save(conf.file)
     }
+
+    private fun addWarp(warps: MutableList<Warp>, warp: Warp, uuid: UUID) =
+            if (WarpsInventory.getWarp(uuid) == null) warps += warp
+            else System.err.println("Der Spieler mit der UUID: $uuid hate mehr als ein Warp. Dies könnte ein Bug sein.")
+
+
+
 
 }

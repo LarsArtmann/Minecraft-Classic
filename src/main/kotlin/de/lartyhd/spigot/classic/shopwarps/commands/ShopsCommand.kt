@@ -23,16 +23,19 @@ class ShopsCommand(javaPlugin: JavaPlugin) : Command(
 ) {
 
     override fun perform(sender: CommandSender, args: Array<String>) = isPlayer(sender) {
-        WarpsInventory.openInventory(it)
-        try {
+        if (args.isEmpty()) WarpsInventory.openInventory(it)
+        else try {
             if (args.size == 2)
-                if (it.hasPermission("shops.admin.delete")) {
-                WarpsInventory.remove(UUID.fromString(args[1]))
-                WarpsInventory.updateWarps()
-                    sender.sendMessage("§4Du hast den Shop von ${args[1]}")
-                } else sendUseMessage(sender)
-        } catch (ex: Exception) {
-            sender.sendMessage("§4Es ist ein Fehler aufgetreten")
+                hasPermission(sender, "shops.admin.delete") {
+                    WarpsInventory.remove(UUID.fromString(args[1]))
+                    WarpsInventory.updateWarps()
+                    sender.sendMessage("§4Du hast den Shop von ${args[1]} gelöscht")
+                }
+            else sendUseMessage(sender)
+        } catch (ex: Throwable) {
+            sender.sendMessage("§4Es ist ein Fehler aufgetreten §c(mehr Infos in der Console)§4.")
+            System.err.println("Es ist ein Fehler aufgetreten:")
+            ex.printStackTrace()
         }
     }
 

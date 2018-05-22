@@ -62,8 +62,8 @@ object WarpsInventory {
         for (i in 9 until warps.size + 9) {
             val item = warps[i - 9].getItem()
             if (item.hasItemMeta()) {
-                item.itemMeta.lore!!.add("")
-                item.itemMeta.lore!!.add("§eDieser Shop gehört: §a${warps[i - 9].uuid}")
+                item.itemMeta.lore?.add("")
+                item.itemMeta.lore?.add("§eDieser Shop gehört: §a${warps[i - 9].uuid}")
             }
             inventory.setItem(i, item)
         }
@@ -71,6 +71,11 @@ object WarpsInventory {
 
     fun getWarp(name: String): Warp? {
         for (warp in warps) if (warp.name == name) return warp
+        return null
+    }
+
+    fun getWarp(uuid: UUID): Warp? {
+        for (warp in warps) if (warp.uuid == uuid) return warp
         return null
     }
 
