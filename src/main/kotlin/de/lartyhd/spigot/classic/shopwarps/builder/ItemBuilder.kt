@@ -22,7 +22,6 @@ import org.bukkit.potion.PotionEffectType
 @Suppress("unused")
 class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
-
     /*CREATE*/
     constructor(material: Material) : this(ItemStack(material))
 

@@ -42,13 +42,20 @@ object WarpsInventory {
                         .setName("§cLösche deinen Warp")
                         .build())
                 .setItem(52, ItemBuilder(Material.INK_SACK, 10.toShort())
-                        .setName("§9Setze deinen eigenen Warp")
+                        .setName("§aSetze deinen eigenen Warp")
                         .addLore("§7Setzt den Warp auf deine aktuelle Location")
                         .build())
     }
 
     fun remove(uuid: UUID) {
         for (warp in ArrayList(warps)) if (warp.uuid == uuid) warps.remove(warp)
+    }
+
+    fun removeAndUpdateWarps(uuid: UUID) {
+        for (warp in ArrayList(warps)) if (warp.uuid == uuid) {
+            warps.remove(warp)
+            updateWarps()
+        }
     }
 
     fun add(warp: Warp) {
@@ -61,9 +68,9 @@ object WarpsInventory {
         inventory.replaceWith(ItemStack(Material.AIR), 9, 44)
         for (i in 9 until warps.size + 9) {
             val item = warps[i - 9].getItem()
-            if (item.hasItemMeta()) {
-                item.itemMeta.lore?.add("")
-                item.itemMeta.lore?.add("§eDieser Shop gehört: §a${warps[i - 9].uuid}")
+            if (item.hasItemMeta()) item.itemMeta.lore?.run {
+                add("")
+                add("§eDieser Shop gehört: §a${warps[i - 9].uuid}")
             }
             inventory.setItem(i, item)
         }

@@ -27,8 +27,7 @@ class ShopsCommand(javaPlugin: JavaPlugin) : Command(
         else try {
             if (args.size == 2)
                 hasPermission(sender, "shops.admin.delete") {
-                    WarpsInventory.remove(UUID.fromString(args[1]))
-                    WarpsInventory.updateWarps()
+                    WarpsInventory.removeAndUpdateWarps(UUID.fromString(args[1]))
                     sender.sendMessage("§4Du hast den Shop von ${args[1]} gelöscht")
                 }
             else sendUseMessage(sender)
