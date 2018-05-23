@@ -53,11 +53,11 @@ abstract class Command(val javaPlugin: JavaPlugin,
     override fun hasPermission(target: CommandSender, lambda: () -> Unit) = hasPermission(target, permission, lambda)
 
     override fun hasPermission(target: CommandSender, permission: String, lambda: () -> Unit) {
-        if (hasPermission(target, permission)) lambda()
-        if (permissionMessage == "")
-            target.sendMessage("${ChatColor.RED}I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.")
-        else if (permissionMessage.isNotEmpty())
-            for (line in permissionMessage.replace("<permission>", permission).split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) target.sendMessage(line)
+        when {
+            hasPermission(target, permission) -> lambda()
+            permissionMessage == "" -> target.sendMessage("${ChatColor.RED}I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.")
+            permissionMessage.isNotEmpty() -> for (line in permissionMessage.replace("<permission>", permission).split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) target.sendMessage(line)
+        }
     }
 
     override fun hasPermission(target: CommandSender): Boolean = hasPermission(target, permission)
