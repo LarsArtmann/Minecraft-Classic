@@ -4,6 +4,7 @@
 
 package de.lartyhd.spigot.classic.shopwarps.inventory
 
+import de.lartyhd.spigot.classic.shopwarps.ShopWarps
 import de.lartyhd.spigot.classic.shopwarps.builder.InventoryBuilder
 import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import de.lartyhd.spigot.classic.shopwarps.warp.Warp
@@ -11,6 +12,7 @@ import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
+import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
 /**
@@ -47,9 +49,6 @@ object WarpsInventory {
                         .build())
     }
 
-    fun remove(uuid: UUID) {
-        for (warp in ArrayList(warps)) if (warp.uuid == uuid) warps.remove(warp)
-    }
 
     fun removeAndUpdateWarps(uuid: UUID) {
         for (warp in ArrayList(warps)) if (warp.uuid == uuid) {
@@ -58,6 +57,11 @@ object WarpsInventory {
         }
     }
 
+    private fun remove(uuid: UUID) {
+        for (warp in ArrayList(warps)) if (warp.uuid == uuid) warps.remove(warp)
+    }
+
+
     fun add(warp: Warp) {
         remove(warp.uuid)
         warps.add(warp)
@@ -65,16 +69,19 @@ object WarpsInventory {
     }
 
     fun updateWarps() {
-        inventory.replaceWith(ItemStack(Material.AIR), 9, 44)
-        for (i in 9 until warps.size + 9) {
-            val item = warps[i - 9].getItem()
-            if (item.hasItemMeta()) item.itemMeta.lore?.run {
-                add("")
-                add("§eDieser Shop gehört: §a${warps[i - 9].uuid}")
-            }
-            inventory.setItem(i, item)
-        }
+        updateInventory()
+        setWarps()
     }
+
+
+    private fun updateInventory() {
+        inventory.replaceWith(ItemStack(Material.AIR), 9, 44)
+        for (i in 9 until warps.size + 9) inventory.setItem(i, ItemBuilder(warps[i - 9].getItem())
+                .addLore(" ", "§eDieser Shop gehört: §a${warps[i - 9].uuid}")
+                .build())
+    }
+
+    private fun setWarps() = JavaPlugin.getPlugin(ShopWarps::class.java).injector.configManager.setWarps(warps)
 
     fun getWarp(name: String): Warp? {
         for (warp in warps) if (warp.name == name) return warp

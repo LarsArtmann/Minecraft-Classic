@@ -4,7 +4,6 @@
 
 package de.lartyhd.spigot.classic.shopwarps.listener
 
-import de.lartyhd.spigot.classic.shopwarps.ShopWarps
 import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory
 import de.lartyhd.spigot.classic.shopwarps.warp.NullWarp
 import de.lartyhd.spigot.classic.shopwarps.warp.SimpleWarp
@@ -132,9 +131,13 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 //                    var subID = 0
 //                    if (split.size == 2) subID = split[1].toInt()
 //                    var material = Material.getMaterial(split[0].toInt())
-            val material = Material.getMaterial(id.toInt()) ?: return null
+            val material = Material.getMaterial(id.toInt())
+            if (material == null) {
+                sender.sendMessage("§cUnerwarteter Fehler")
+                return null
+            }
             println(material)
-            if (isItem(material)) {
+            if (!isItem(material)) {
                 sender.sendMessage("§cDieses Material ist kein Item :(")
                 return null
             }
@@ -154,8 +157,7 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
     private fun addWarp(warp: NullWarp) {
         for (i in 0 until warp.lore.size) warp.lore[i] = warp.lore[i].replace('&', '§')
         WarpsInventory.add(SimpleWarp(warp.uuid, warp.location!!, warp.material!!, warp.lore, warp.name!!))
-        JavaPlugin.getPlugin(ShopWarps::class.java).injector.configManager.setWarps(WarpsInventory.warps)
-        WarpsInventory.updateWarps()
+
     }
 
     /**

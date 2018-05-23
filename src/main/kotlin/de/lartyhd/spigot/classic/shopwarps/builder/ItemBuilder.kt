@@ -80,38 +80,47 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
         return this
     }
 
-    fun addLore(lore: List<String>): ItemBuilder {
+    fun addLore(lore: Collection<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
-        itemMeta.lore.addAll(lore)
-        itemMeta.lore = itemMeta.lore
+        val itemLore = itemMeta.lore ?: mutableListOf()
+        itemLore.addAll(lore)
+        itemMeta.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
-    fun addLore(i: Int, lore: List<String>): ItemBuilder {
+    fun addLore(i: Int, lore: Collection<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
-        itemMeta.lore.addAll(i, lore)
-        itemMeta.lore = itemMeta.lore
+        val itemLore = itemMeta.lore ?: mutableListOf()
+        itemLore.addAll(i, lore)
+        itemMeta.lore = itemLore
+        itemStack.itemMeta = itemMeta
+        return this
+    }
+
+    fun addLore(vararg lore: String): ItemBuilder {
+        val itemMeta = itemStack.itemMeta
+        val itemLore = itemMeta.lore ?: mutableListOf()
+        itemLore.addAll(lore)
+        itemMeta.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun addLore(lore: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
-        itemMeta.lore.add(lore)
-        itemMeta.lore = itemMeta.lore
+        val itemLore = itemMeta.lore ?: mutableListOf()
+        itemLore.add(lore)
+        itemMeta.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun addLore(i: Int, lore: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
-        itemMeta.lore.add(i, lore)
-        itemMeta.lore = itemMeta.lore
+        val itemLore = itemMeta.lore ?: mutableListOf()
+        itemLore.add(i, lore)
+        itemMeta.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -125,18 +134,18 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun removeLore(lore: List<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
-        itemMeta.lore.removeAll(lore)
-        itemMeta.lore = itemMeta.lore
+        val itemLore = itemMeta.lore ?: mutableListOf()
+        itemLore.removeAll(lore)
+        itemMeta.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun removeLore(i: Int): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        if (itemMeta.lore === null) itemMeta.lore = mutableListOf()
-        itemMeta.lore.removeAt(i)
-        itemMeta.lore = itemMeta.lore
+        val itemLore = itemMeta.lore ?: mutableListOf()
+        itemLore.removeAt(i)
+        itemMeta.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -653,8 +662,13 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
         return ItemBuilder(itemStack.clone())
     }
 
+
     override fun build(): ItemStack {
         return itemStack
+    }
+
+    override fun toString(): String {
+        return "ItemBuilder(itemStack=$itemStack)"
     }
     /*
 	 *Extras

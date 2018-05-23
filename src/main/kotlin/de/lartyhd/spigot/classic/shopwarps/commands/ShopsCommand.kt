@@ -26,7 +26,7 @@ class ShopsCommand(javaPlugin: JavaPlugin) : Command(
     override fun perform(sender: CommandSender, args: Array<String>) = isPlayer(sender) {
         if (args.isEmpty()) WarpsInventory.openInventory(it)
         else try {
-            if (args.size == 2 && args[1].equals("delete", true))
+            if (args.size == 2 && args[0].equals("delete", true))
                 hasPermission(sender, "shops.admin.delete") {
                     WarpsInventory.removeAndUpdateWarps(UUID.fromString(args[1]))
                     sender.sendMessage("${Messages.PREFIX}§bDu hast alle Shop von §9${args[1]} §bgelöscht")

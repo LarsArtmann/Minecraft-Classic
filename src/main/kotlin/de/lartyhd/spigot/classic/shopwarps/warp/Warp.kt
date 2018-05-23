@@ -19,12 +19,11 @@ interface Warp {
     val uuid: UUID
     val location: Location?
     val material: Material?
-    val lore: MutableList<String>?
+    val lore: MutableList<String>
     val name: String?
 
     fun getItem(): ItemStack {
-        if (lore == null) throw NullPointerException("lore can not be null")
-        return ItemBuilder(material!!).setLore(lore!!).setName("§9$name").build()
+        return ItemBuilder(material!!).setLore(lore).setName("§9$name").build()
     }
 
 }
