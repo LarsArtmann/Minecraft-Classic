@@ -4,6 +4,7 @@
 
 package de.lartyhd.spigot.classic.shopwarps.commands
 
+import de.lartyhd.spigot.classic.shopwarps.Injector
 import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory
 import de.lartyhd.spigot.classic.shopwarps.utils.Messages
 import org.bukkit.command.CommandSender
@@ -19,23 +20,30 @@ class ShopsCommand(javaPlugin: JavaPlugin) : Command(
         javaPlugin = javaPlugin,
         commandName = "Shops",
         permission = "shops.use",
-        usage = "[delete <UUID>]",
+        usage = "[reload]:shopwarps.commands.shops.delete|[delete <UUID>]:shopwarps.commands.shops.reload",
         maxLength = 2
 ) {
 
     override fun perform(sender: CommandSender, args: Array<String>) = isPlayer(sender) {
         if (args.isEmpty()) WarpsInventory.openInventory(it)
         else try {
-            if (args.size == 2 && args[0].equals("delete", true))
-                hasPermission(sender, "shops.admin.delete") {
+            when {
+                args.size == 2 && args[0].equals("delete", true) -> hasPermission(sender, "shopwarps.commands.shops.delete") {
                     WarpsInventory.removeAndUpdateWarps(UUID.fromString(args[1]))
-                    sender.sendMessage("${Messages.PREFIX}§bDu hast alle Shop von §9${args[1]} §bgelöscht")
+                    sender.sendMessage("${Messages.PREFIX}§bDu hast alle Shops von §9${args[1]} §bgelöscht")
                 }
-            else sendUseMessage(sender)
+                args.size == 1 && args[0].equals("reload", true) -> hasPermission(sender, "shopwarps.commands.shops.reload") {
+                    sender.sendMessage("${Messages.PREFIX}Reload the warps...")
+                    WarpsInventory.warps.clear()
+                    Injector.addWarps()
+                    sender.sendMessage("${Messages.PREFIX}Reloaded the warps")
+                }
+                else -> sendUseMessage(sender)
+            }
         } catch (ex: Throwable) {
             val message = "Es ist ein Fehler beim löschen der Warps von ${args[1]} aufgetreten"
-            sender.sendMessage("§4$message §c(mehr Infos in der Console)§4.")
-            System.err.println("$message:")
+            sender.sendMessage("${Messages.PREFIX}§4$message §c(mehr Infos in der Console)§4.")
+            System.err.println("${Messages.UNCOLORED_PREFIX}$message:")
             ex.printStackTrace()
         }
     }

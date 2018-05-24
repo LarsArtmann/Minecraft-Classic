@@ -4,7 +4,7 @@
 
 package de.lartyhd.spigot.classic.shopwarps.inventory
 
-import de.lartyhd.spigot.classic.shopwarps.ShopWarps
+import de.lartyhd.spigot.classic.shopwarps.Injector
 import de.lartyhd.spigot.classic.shopwarps.builder.InventoryBuilder
 import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import de.lartyhd.spigot.classic.shopwarps.warp.Warp
@@ -12,7 +12,6 @@ import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
 /**
@@ -81,7 +80,7 @@ object WarpsInventory {
                 .build())
     }
 
-    private fun setWarps() = JavaPlugin.getPlugin(ShopWarps::class.java).injector.configManager.setWarps(warps)
+    private fun setWarps() = Injector.configManager.setWarps(warps)
 
     fun getWarp(name: String): Warp? {
         for (warp in warps) if (warp.name == name) return warp

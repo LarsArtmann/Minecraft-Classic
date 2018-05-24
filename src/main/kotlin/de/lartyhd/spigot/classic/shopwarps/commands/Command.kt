@@ -41,11 +41,12 @@ abstract class Command(val javaPlugin: JavaPlugin,
 
     override fun onCommand(sender: CommandSender, command: org.bukkit.command.Command, s: String, args: Array<String>?): Boolean {
         hasPermission(sender) {
-            if (args == null || args.isEmpty())
-                perform(sender, emptyArray())
-            else if (args.size < minLength || args.size > maxLength)
-                sendUseMessage(sender)
-            else perform(sender, args)
+            when {
+                args == null || args.isEmpty() -> perform(sender, emptyArray())
+                args.size < minLength || args.size > maxLength -> sendUseMessage(sender)
+                maxLength > 0 && args[0].equals("help", true) -> sendUseMessage(sender)
+                else -> perform(sender, args)
+            }
         }
         return true
     }
@@ -64,7 +65,7 @@ abstract class Command(val javaPlugin: JavaPlugin,
 
     override fun hasPermission(target: CommandSender, permission: String): Boolean {
         if (permission.isEmpty()) return true
-        for (p in permission.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+        for (p in split(permission, ";"))
             if (target.hasPermission(p)) return true
         return false
     }
@@ -73,5 +74,18 @@ abstract class Command(val javaPlugin: JavaPlugin,
 
     override fun getTarget(sender: CommandSender, player: Player?, lambda: (Player) -> Unit) = if (player != null) lambda(player) else sender.sendMessage("§cDer Spieler ist nicht Online")
 
-    override fun sendUseMessage(sender: CommandSender) = sender.sendMessage("§7Nutze: §8/$commandName §7$usage")
+    override fun sendUseMessage(sender: CommandSender) {
+        for (usage in split(usage, "|")) {
+            if (usage.contains(":")) {
+                for (permission in split(split(usage, ":")[1], ";"))
+                    if (hasPermission(sender, permission)) sendOnlyUseMessage(sender)
+            } else sendOnlyUseMessage(sender)
+        }
+    }
+
+    private fun sendOnlyUseMessage(sender: CommandSender) {
+        sender.sendMessage("§7Nutze: §8/$commandName §7$usage")
+    }
+
+    fun split(value: String, key: String) = value.split(key).dropLastWhile { it.isEmpty() }.toTypedArray()
 }

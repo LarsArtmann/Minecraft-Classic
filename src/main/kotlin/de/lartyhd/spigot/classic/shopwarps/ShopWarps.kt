@@ -4,7 +4,6 @@
 
 package de.lartyhd.spigot.classic.shopwarps
 
-import de.lartyhd.spigot.classic.shopwarps.injector.JavaPluginInjector
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
@@ -14,10 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin
  */
 class ShopWarps : JavaPlugin() {
 
-    val injector = JavaPluginInjector(this)
-
     override fun onEnable() {
-        injector.inject()
+        Injector.init(this)
     }
 
 //    override fun onDisable() {
