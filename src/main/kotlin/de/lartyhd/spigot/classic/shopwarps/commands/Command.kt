@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin
 /**
  * @author Lars Artmann | LartyHD
  * Created by Lars Artmann | LartyHD on 26.03.2018 03:41.
- * Last edit 22.05.2018
+ * Last edit 24.05.2018
  */
 @Suppress("MemberVisibilityCanBePrivate", "LeakingThis")
 abstract class Command(val javaPlugin: JavaPlugin,
@@ -39,7 +39,7 @@ abstract class Command(val javaPlugin: JavaPlugin,
             }
             command.executor = this
         }
-        if (maxLength > 0) usage = if (minLength == 0) "[help]|$usage" else "<help>|$usage"
+        if (maxLength > 0) usage = if (minLength == 0) "|[help]|$usage" else "<help>|$usage"
     }
 
     override fun onCommand(sender: CommandSender, command: org.bukkit.command.Command, s: String, args: Array<String>?): Boolean {
@@ -77,16 +77,17 @@ abstract class Command(val javaPlugin: JavaPlugin,
 
     override fun getTarget(sender: CommandSender, player: Player?, lambda: (Player) -> Unit) = if (player != null) lambda(player) else sender.sendMessage("§cDer Spieler ist nicht Online")
 
-    override fun sendUseMessage(sender: CommandSender) {
-        if (split(usage, "|").isEmpty()) sender.sendMessage("$prefix§7Nutze: §8/$commandName §7$usage")
-        else {
-            sender.sendMessage("$prefix§7Nutze:")
-            for (usage in split(usage, "|")) {
-                if (usage.contains(":")) {
-                    for (permission in split(split(usage, ":")[1], ";"))
-                        if (hasPermission(sender, permission)) sendUseMessage(sender, usage)
-                } else sendUseMessage(sender, usage)
-            }
+    override fun sendUseMessage(sender: CommandSender) = if (split(usage, "|").isEmpty())
+        sender.sendMessage("$prefix§7Nutze: §8/$commandName §7$usage")
+    else {
+        sender.sendMessage("$prefix§7Nutze:")
+        for (usage in split(usage, "|")) {
+            if (usage.contains(":")) {
+                val subCommand = split(usage, ":")
+                if (hasPermission(sender, subCommand[1])) {
+                    sendUseMessage(sender, subCommand[0])
+                }
+            } else sendUseMessage(sender, usage)
         }
     }
 
