@@ -12,7 +12,7 @@ package de.lartyhd.spigot.classic.shopwarps.utils
 enum class Messages(private val message: String) {
 
     NAME("Shops"),
-    PREFIX("§8[§b$NAME§8] §f"),
+    PREFIX("§8[§b$NAME§8] §r"),
     UNCOLORED_PREFIX("[$NAME] ");
 
     override fun toString() = message

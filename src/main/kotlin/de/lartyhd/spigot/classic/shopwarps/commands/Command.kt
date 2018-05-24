@@ -22,10 +22,12 @@ abstract class Command(val javaPlugin: JavaPlugin,
                        val commandName: String,
                        val permission: String = "",
                        val permissionMessage: String = "",
-                       val usage: String = "",
+                       var usage: String = "",
                        val minLength: Int = 0,
                        val maxLength: Int = 0,
                        tabCompleter: TabCompleter? = null) : CommandExecutor, ICommand {
+
+    var prefix = "§f[§b${javaPlugin.name}§f] §r"
 
     init {
         val command: PluginCommand? = javaPlugin.getCommand(commandName)
@@ -37,14 +39,15 @@ abstract class Command(val javaPlugin: JavaPlugin,
             }
             command.executor = this
         }
+        if (maxLength > 0) usage = if (minLength == 0) "[help]|$usage" else "<help>|$usage"
     }
 
     override fun onCommand(sender: CommandSender, command: org.bukkit.command.Command, s: String, args: Array<String>?): Boolean {
         hasPermission(sender) {
             when {
                 args == null || args.isEmpty() -> perform(sender, emptyArray())
-                args.size < minLength || args.size > maxLength -> sendUseMessage(sender)
-                maxLength > 0 && args[0].equals("help", true) -> sendUseMessage(sender)
+                args.size < minLength || args.size > maxLength || (maxLength > 0 && args[0].equals("help", true)) ->
+                    sendUseMessage(sender)
                 else -> perform(sender, args)
             }
         }
@@ -75,16 +78,20 @@ abstract class Command(val javaPlugin: JavaPlugin,
     override fun getTarget(sender: CommandSender, player: Player?, lambda: (Player) -> Unit) = if (player != null) lambda(player) else sender.sendMessage("§cDer Spieler ist nicht Online")
 
     override fun sendUseMessage(sender: CommandSender) {
-        for (usage in split(usage, "|")) {
-            if (usage.contains(":")) {
-                for (permission in split(split(usage, ":")[1], ";"))
-                    if (hasPermission(sender, permission)) sendOnlyUseMessage(sender)
-            } else sendOnlyUseMessage(sender)
+        if (split(usage, "|").isEmpty()) sender.sendMessage("$prefix§7Nutze: §8/$commandName §7$usage")
+        else {
+            sender.sendMessage("$prefix§7Nutze:")
+            for (usage in split(usage, "|")) {
+                if (usage.contains(":")) {
+                    for (permission in split(split(usage, ":")[1], ";"))
+                        if (hasPermission(sender, permission)) sendUseMessage(sender, usage)
+                } else sendUseMessage(sender, usage)
+            }
         }
     }
 
-    private fun sendOnlyUseMessage(sender: CommandSender) {
-        sender.sendMessage("§7Nutze: §8/$commandName §7$usage")
+    private fun sendUseMessage(sender: CommandSender, usage: String) {
+        sender.sendMessage("§7- §8/$commandName §7$usage")
     }
 
     fun split(value: String, key: String) = value.split(key).dropLastWhile { it.isEmpty() }.toTypedArray()
