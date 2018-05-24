@@ -4,6 +4,7 @@
 
 package de.lartyhd.spigot.classic.shopwarps.commands.interfaces
 
+import de.lartyhd.spigot.classic.shopwarps.api.interfaces.permissions.tester.classvalues.DefaultClassValuesPermissionsTester
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -15,19 +16,11 @@ import java.util.*
  * Created by Lars Artmann | LartyHD on 11.05.2018 09:41.
  * Last edit 22.05.2018
  */
-interface ICommand : CommandExecutor {
+interface ICommand : CommandExecutor, DefaultClassValuesPermissionsTester {
 
     override fun onCommand(sender: CommandSender, command: org.bukkit.command.Command, s: String, args: Array<String>?): Boolean
 
     fun perform(sender: CommandSender, args: Array<String>)
-
-    fun hasPermission(target: CommandSender, lambda: () -> Unit)
-
-    fun hasPermission(target: CommandSender, permission: String, lambda: () -> Unit)
-
-    fun hasPermission(target: CommandSender): Boolean
-
-    fun hasPermission(target: CommandSender, permission: String): Boolean
 
     fun isPlayer(sender: CommandSender, lambda: (Player) -> Unit)
 

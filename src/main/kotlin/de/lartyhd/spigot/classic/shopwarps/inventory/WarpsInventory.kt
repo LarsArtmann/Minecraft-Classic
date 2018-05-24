@@ -10,6 +10,7 @@ import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import de.lartyhd.spigot.classic.shopwarps.warp.Warp
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import java.util.*
@@ -21,12 +22,14 @@ import java.util.*
  */
 object WarpsInventory {
 
-    private val inventory: InventoryBuilder
+    private val main: InventoryBuilder
+    private val settings: InventoryBuilder
+    private val create: InventoryBuilder
     val warps: MutableList<Warp> = ArrayList()
 
     init {
         val glass = ItemBuilder(Material.STAINED_GLASS_PANE, 7.toShort()).setName("§0").build()
-        inventory = InventoryBuilder(54, "§9Shops")
+        main = InventoryBuilder(54, "§9Shops §8- §9Main")
                 .fillWith(glass, 0, 8)
                 .fillWith(glass, 45, 53)
                 .setItem(4, ItemBuilder(Material.SIGN)
@@ -39,15 +42,27 @@ object WarpsInventory {
                                 "§7Danke an §bTerra §7und §bAyumu §7für das coole §bProjekt"
                         ))
                         .build())
-                .setItem(46, ItemBuilder(Material.INK_SACK, 1.toShort())
-                        .setName("§cLösche deinen Warp")
+                .setItem(49, ItemBuilder(Material.REDSTONE_COMPARATOR, 1.toShort())
+                        .setName("§9Einstellungen")
                         .build())
-                .setItem(52, ItemBuilder(Material.INK_SACK, 10.toShort())
-                        .setName("§aSetze deinen eigenen Warp")
-                        .addLore("§7Setzt den Warp auf deine aktuelle Location")
+        settings = InventoryBuilder(InventoryType.HOPPER, "§9Shops §8- §9Settings")
+                .fillWith(glass)
+                .setItem(0, ItemBuilder(Material.INK_SACK, 1.toShort())
+                        .setName("§9Warp löschen")
                         .build())
-    }
+                .setItem(2, ItemBuilder(Material.INK_SACK, 8.toShort())
+                        .setName("§9Warp Einstellungen anpassen")
+                        .build())
+                .setItem(4, ItemBuilder(Material.INK_SACK, 10.toShort())
+                        .setName("§9Warp neu erstellen")
+                        .build())
+        create = InventoryBuilder(InventoryType.DISPENSER, "§9Shops §8- §9Create")
+                .fillWith(glass)
+                .setItem(4, ItemBuilder(Material.INK_SACK, 10.toShort())
+                        .setName("§9Neuen Warp erstellen")
+                        .build())
 
+    }
 
     fun removeAndUpdateWarps(uuid: UUID) {
         for (warp in ArrayList(warps)) if (warp.uuid == uuid) {
@@ -60,7 +75,6 @@ object WarpsInventory {
         for (warp in ArrayList(warps)) if (warp.uuid == uuid) warps.remove(warp)
     }
 
-
     fun add(warp: Warp) {
         remove(warp.uuid)
         warps.add(warp)
@@ -72,10 +86,9 @@ object WarpsInventory {
         setWarps()
     }
 
-
     private fun updateInventory() {
-        inventory.replaceWith(ItemStack(Material.AIR), 9, 44)
-        for (i in 9 until warps.size + 9) inventory.setItem(i, ItemBuilder(warps[i - 9].getItem())
+        main.replaceWith(ItemStack(Material.AIR), 9, 44)
+        for (i in 9 until warps.size + 9) main.setItem(i, ItemBuilder(warps[i - 9].getItem())
                 .addLore(" ", "§eDieser Shop gehört: §a${warps[i - 9].uuid}")
                 .build())
     }
@@ -92,5 +105,11 @@ object WarpsInventory {
         return null
     }
 
-    fun openInventory(humanEntity: HumanEntity): InventoryView = humanEntity.openInventory(inventory.build())
+    fun openMain(humanEntity: HumanEntity) = openInventory(humanEntity, main)
+
+    fun openSettings(humanEntity: HumanEntity) = openInventory(humanEntity, settings)
+
+    fun openCreate(humanEntity: HumanEntity) = openInventory(humanEntity, create)
+
+    fun openInventory(humanEntity: HumanEntity, inventoryBuilder: InventoryBuilder): InventoryView = humanEntity.openInventory(inventoryBuilder.build())
 }

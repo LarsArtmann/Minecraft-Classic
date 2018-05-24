@@ -4,7 +4,6 @@
 package de.lartyhd.spigot.classic.shopwarps.commands
 
 import de.lartyhd.spigot.classic.shopwarps.commands.interfaces.ICommand
-import org.bukkit.ChatColor
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.PluginCommand
@@ -20,8 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin
 @Suppress("MemberVisibilityCanBePrivate", "LeakingThis")
 abstract class Command(val javaPlugin: JavaPlugin,
                        val commandName: String,
-                       val permission: String = "",
-                       val permissionMessage: String = "",
+                       override val permission: String = "",
+                       override val permissionMessage: String = "",
                        var usage: String = "",
                        val minLength: Int = 0,
                        val maxLength: Int = 0,
@@ -53,25 +52,25 @@ abstract class Command(val javaPlugin: JavaPlugin,
         }
         return true
     }
-
-    override fun hasPermission(target: CommandSender, lambda: () -> Unit) = hasPermission(target, permission, lambda)
-
-    override fun hasPermission(target: CommandSender, permission: String, lambda: () -> Unit) {
-        when {
-            hasPermission(target, permission) -> lambda()
-            permissionMessage == "" -> target.sendMessage("${ChatColor.RED}I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.")
-            permissionMessage.isNotEmpty() -> for (line in permissionMessage.replace("<permission>", permission).split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) target.sendMessage(line)
-        }
-    }
-
-    override fun hasPermission(target: CommandSender): Boolean = hasPermission(target, permission)
-
-    override fun hasPermission(target: CommandSender, permission: String): Boolean {
-        if (permission.isEmpty()) return true
-        for (p in split(permission, ";"))
-            if (target.hasPermission(p)) return true
-        return false
-    }
+//
+//    override fun hasPermission(target: CommandSender, lambda: () -> Unit) = hasPermission(target, permission, lambda)
+//
+//    override fun hasPermission(target: CommandSender, permission: String, lambda: () -> Unit) {
+//        when {
+//            hasPermission(target, permission) -> lambda()
+//            permissionMessage == "" -> target.sendMessage("${ChatColor.RED}I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.")
+//            permissionMessage.isNotEmpty() -> for (line in permissionMessage.replace("<permission>", permission).split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) target.sendMessage(line)
+//        }
+//    }
+//
+//    override fun hasPermission(target: CommandSender): Boolean = hasPermission(target, permission)
+//
+//    override fun hasPermission(target: CommandSender, permission: String): Boolean {
+//        if (permission.isEmpty()) return true
+//        for (p in split(permission, ";"))
+//            if (target.hasPermission(p)) return true
+//        return false
+//    }
 
     override fun isPlayer(sender: CommandSender, lambda: (Player) -> Unit) = if (sender is Player) lambda(sender) else sender.sendMessage("Der Command ist nur für Spieler")
 
@@ -94,6 +93,4 @@ abstract class Command(val javaPlugin: JavaPlugin,
     private fun sendUseMessage(sender: CommandSender, usage: String) {
         sender.sendMessage("§7- §8/$commandName §7$usage")
     }
-
-    fun split(value: String, key: String) = value.split(key).dropLastWhile { it.isEmpty() }.toTypedArray()
 }

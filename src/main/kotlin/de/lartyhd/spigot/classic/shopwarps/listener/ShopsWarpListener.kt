@@ -48,9 +48,10 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
-        if (event.inventory == null
-                || event.inventory.title == null
-                || event.inventory.title != "§9Shops") return
+        val inventory = event.inventory
+        if (inventory == null
+                || inventory.title == null
+                || inventory.title != "§9Shops") return
         cancel(event)
         val humanEntity = event.whoClicked
         if ((event.slot == 52 || event.slot == 46 || (event.slot in 9..44)) && event.currentItem != null && event.currentItem.type != Material.AIR) humanEntity.closeInventory()
@@ -127,26 +128,15 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 
     private fun getMaterialByID(id: String, sender: CommandSender): Material? {
         return try {
-//                    val split = event.message.split(":")
-//                    var subID = 0
-//                    if (split.size == 2) subID = split[1].toInt()
-//                    var material = Material.getMaterial(split[0].toInt())
             val material = Material.getMaterial(id.toInt())
             if (material == null) {
                 sender.sendMessage("§cUnerwarteter Fehler")
                 return null
             }
-            println(material)
             if (!isItem(material)) {
                 sender.sendMessage("§cDieses Material ist kein Item :(")
                 return null
             }
-            /* for (blockedMaterial in blockedMaterials) {
-                 if (blockedMaterial == material) {
-                     sender.sendMessage("§cDieses Material ist verboten :(")
-                     return null
-                 }
-             }*/
             material
         } catch (ex: NumberFormatException) {
             sender.sendMessage("§cNur Zahlen!"/* ID oder ID:SUB_ID*/)

@@ -29,7 +29,7 @@ class ShopsCommand(javaPlugin: JavaPlugin) : Command(
     }
 
     override fun perform(sender: CommandSender, args: Array<String>) = isPlayer(sender) {
-        if (args.isEmpty()) WarpsInventory.openInventory(it)
+        if (args.isEmpty()) WarpsInventory.openMain(it)
         else try {
             when {
                 args.size == 2 && args[0].equals("delete", true) -> hasPermission(sender, "shopwarps.commands.shops.delete") {
