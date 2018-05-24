@@ -9,10 +9,10 @@ package de.lartyhd.spigot.classic.shopwarps.utils
  * Created by Lars Artmann | LartyHD on 23.05.2018 18:45.
  * Last edit 23.05.2018
  */
-enum class Messages(private val message: String) {
+enum class Messages(val message: String) {
 
     NAME("Shops"),
-    PREFIX("§8[§b$NAME§8] §r"),
+    PREFIX("§f[§b$NAME§f] §r"),
     UNCOLORED_PREFIX("[$NAME] ");
 
     override fun toString() = message

@@ -45,6 +45,7 @@ class ConfigManager(val folder: File, fileName: String) {
 
 
     fun setWarps(warps: List<Warp>) {
+        conf.set("shops", null) //CLEAR all Shops
         for (i in 0 until warps.size) {
             val warp = warps[i]
             val locationPrefix = "shops.$i.location."
