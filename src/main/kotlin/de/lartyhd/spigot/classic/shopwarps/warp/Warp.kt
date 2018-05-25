@@ -7,7 +7,6 @@ package de.lartyhd.spigot.classic.shopwarps.warp
 import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.inventory.ItemStack
 import java.util.*
 
 /**
@@ -22,8 +21,7 @@ interface Warp {
     val lore: MutableList<String>
     val name: String?
 
-    fun getItem(): ItemStack {
-        return ItemBuilder(material!!).setLore(lore).setName("§9$name").build()
-    }
+    fun getItem() = ItemBuilder(material!!).setLore(lore).setName("§9$name").build()
 
+    fun getItemWithUUIDLore() = ItemBuilder(material!!).setLore(lore).addLore("", "§eDieser Shop gehört: §a$uuid").setName("§9$name").build()
 }

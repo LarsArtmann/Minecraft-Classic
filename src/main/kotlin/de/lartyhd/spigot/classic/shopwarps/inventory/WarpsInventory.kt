@@ -10,7 +10,6 @@ import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import de.lartyhd.spigot.classic.shopwarps.warp.Warp
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
-import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import java.util.*
@@ -23,13 +22,13 @@ import java.util.*
 object WarpsInventory {
 
     private val main: InventoryBuilder
-    private val settings: InventoryBuilder
-    private val create: InventoryBuilder
+    //    private val settings: InventoryBuilder
+//    private val create: InventoryBuilder
     val warps: MutableList<Warp> = ArrayList()
 
     init {
         val glass = ItemBuilder(Material.STAINED_GLASS_PANE, 7.toShort()).setName("§0").build()
-        main = InventoryBuilder(54, "§9Shops §8- §9Main")
+        /*main = InventoryBuilder(54, "§9Shops §8- §9Main")
                 .fillWith(glass, 0, 8)
                 .fillWith(glass, 45, 53)
                 .setItem(4, ItemBuilder(Material.SIGN)
@@ -60,8 +59,27 @@ object WarpsInventory {
                 .fillWith(glass)
                 .setItem(4, ItemBuilder(Material.INK_SACK, 10.toShort())
                         .setName("§9Neuen Warp erstellen")
+                        .build())*/
+        main = InventoryBuilder(54, "§9Shops")
+                .fillWith(glass, 0, 8)
+                .fillWith(glass, 45, 53)
+                .setItem(4, ItemBuilder(Material.SIGN)
+                        .setName("§9Infos")
+                        .setLore(listOf(
+                                " ",
+                                "§7Von §bLars Artmann §8| §bLartyHD",
+                                "§7für §bClassic §7programmiert",
+                                "",
+                                "§7Danke an §bTerra §7und §bAyumu §7für das coole §bProjekt"
+                        ))
                         .build())
-
+                .setItem(46, ItemBuilder(Material.INK_SACK, 1.toShort())
+                        .setName("§cLösche deinen Warp")
+                        .build())
+                .setItem(52, ItemBuilder(Material.INK_SACK, 10.toShort())
+                        .setName("§9Setze deinen eigenen Warp")
+                        .addLore("§7Setzt den Warp auf deine aktuelle Location")
+                        .build())
     }
 
     fun removeAndUpdateWarps(uuid: UUID) {
@@ -88,9 +106,7 @@ object WarpsInventory {
 
     private fun updateInventory() {
         main.replaceWith(ItemStack(Material.AIR), 9, 44)
-        for (i in 9 until warps.size + 9) main.setItem(i, ItemBuilder(warps[i - 9].getItem())
-                .addLore(" ", "§eDieser Shop gehört: §a${warps[i - 9].uuid}")
-                .build())
+        for (i in 9 until warps.size + 9) main.setItem(i, warps[i - 9].getItemWithUUIDLore())
     }
 
     private fun setWarps() = Injector.configManager.setWarps(warps)
@@ -106,10 +122,10 @@ object WarpsInventory {
     }
 
     fun openMain(humanEntity: HumanEntity) = openInventory(humanEntity, main)
-
-    fun openSettings(humanEntity: HumanEntity) = openInventory(humanEntity, settings)
-
-    fun openCreate(humanEntity: HumanEntity) = openInventory(humanEntity, create)
+//
+//    fun openSettings(humanEntity: HumanEntity) = openInventory(humanEntity, settings)
+//
+//    fun openCreate(humanEntity: HumanEntity) = openInventory(humanEntity, create)
 
     fun openInventory(humanEntity: HumanEntity, inventoryBuilder: InventoryBuilder): InventoryView = humanEntity.openInventory(inventoryBuilder.build())
 }

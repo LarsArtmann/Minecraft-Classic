@@ -21,6 +21,9 @@ interface DefaultPermissionsTester : PermissionsTester, DefaultSplit {
         return false
     }
 
+    override fun hasPermission(target: CommandSender, permission: String, lambda: () -> Unit) = hasPermission(target, permission, "", lambda)
+
+
     override fun hasPermission(target: CommandSender, permission: String, permissionMessage: String, lambda: () -> Unit) {
         when {
             hasPermission(target, permission) -> lambda()

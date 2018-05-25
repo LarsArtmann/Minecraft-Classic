@@ -81,7 +81,7 @@ abstract class Command(val javaPlugin: JavaPlugin,
     else {
         sender.sendMessage("$prefix§7Nutze:")
         for (usage in split(usage, "|")) {
-            if (usage.contains(":")) {
+            if (":" in usage) { //SOLL WIE "usage.contains(":")" SEIN
                 val subCommand = split(usage, ":")
                 if (hasPermission(sender, subCommand[1])) {
                     sendUseMessage(sender, subCommand[0])

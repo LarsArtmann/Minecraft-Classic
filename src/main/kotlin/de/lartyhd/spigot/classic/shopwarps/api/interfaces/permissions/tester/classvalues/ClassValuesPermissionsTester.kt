@@ -18,6 +18,4 @@ interface ClassValuesPermissionsTester : PermissionsTester {
 
     fun hasPermission(target: CommandSender, lambda: () -> Unit)
 
-    fun hasPermission(target: CommandSender, permission: String, lambda: () -> Unit)
-
 }

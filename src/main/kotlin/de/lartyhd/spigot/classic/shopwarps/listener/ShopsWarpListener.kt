@@ -49,11 +49,12 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
         val inventory = event.inventory
+        val humanEntity = event.whoClicked
         if (inventory == null
                 || inventory.title == null
                 || inventory.title != "§9Shops") return
+        if (humanEntity.openInventory.topInventory != inventory) return
         cancel(event)
-        val humanEntity = event.whoClicked
         if ((event.slot == 52 || event.slot == 46 || (event.slot in 9..44)) && event.currentItem != null && event.currentItem.type != Material.AIR) humanEntity.closeInventory()
         when {
             event.slot == 52 -> {
@@ -70,10 +71,12 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
             event.slot < 9 || event.slot > 44
                     || event.currentItem == null
                     || event.currentItem.itemMeta == null
-                    || event.currentItem.itemMeta.displayName == null -> return
+                    || event.currentItem.itemMeta.displayName == null -> {
+                return
+            }
         }
         val warp = WarpsInventory.getWarp(event.currentItem.itemMeta.displayName.substring(2))
-        if (event.currentItem != warp?.getItem()) return
+        if (event.currentItem != warp?.getItemWithUUIDLore()) return
         humanEntity.teleport(warp?.location)
     }
 

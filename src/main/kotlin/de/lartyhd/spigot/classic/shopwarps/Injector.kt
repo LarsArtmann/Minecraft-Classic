@@ -24,6 +24,7 @@ object Injector {
         addWarps()
         ShopsCommand(javaPlugin)
         ShopsWarpListener(javaPlugin)
+//        GenerateWarpListener(javaPlugin)
     }
 
     @Suppress("MemberVisibilityCanBePrivate")

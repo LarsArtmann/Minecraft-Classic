@@ -39,7 +39,7 @@ class InventoryBuilder(private val inventory: Inventory) : Builder<Inventory> {
     }
 
     fun fillWith(item: ItemStack): InventoryBuilder {
-        for (i in 0 until this.inventory.size + 1) {
+        for (i in 0 until this.inventory.size) {
             if (this.inventory.getItem(i) != null) continue
             this.inventory.setItem(i, item)
         }
