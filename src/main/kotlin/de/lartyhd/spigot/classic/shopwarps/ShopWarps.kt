@@ -14,6 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin
 class ShopWarps : JavaPlugin() {
 
     override fun onEnable() {
+        println(this)
+        println(Injector)
         Injector.init(this)
     }
 

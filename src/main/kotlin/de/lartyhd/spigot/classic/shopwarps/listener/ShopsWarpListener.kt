@@ -127,21 +127,16 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 	}
 
 	private fun getMaterialByID(id: String, sender: CommandSender): Material? {
-		return try {
-			val material = Material.getMaterial(id)
-			if (material == null) {
-				sender.sendMessage("§cUnerwarteter Fehler")
-				return null
-			}
-			if (!material.isItem) {
-				sender.sendMessage("§cDieses Material ist kein Item :(")
-				return null
-			}
-			material
-		} catch (ex: NumberFormatException) {
-			sender.sendMessage("§cNur Zahlen!"/* ID oder ID:SUB_ID*/)
-			null
+		val material = Material.getMaterial(id.toUpperCase())
+		if (material == null) {
+			sender.sendMessage("§cUnerwarteter Fehler!\nNutze ein diese Materialen: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html")
+			return null
 		}
+		if (!material.isItem) {
+			sender.sendMessage("§cDieses Material ist kein Item :(")
+			return null
+		}
+		return material
 	}
 
 	private fun addWarp(warp: NullWarp) {

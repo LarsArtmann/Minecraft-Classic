@@ -57,7 +57,7 @@ class ConfigManager(val folder: File, fileName: String) {
 			conf.set("${locationPrefix}Z", location?.z)
 			conf.set("${locationPrefix}Yaw", location?.yaw)
 			conf.set("${locationPrefix}Pitch", location?.pitch)
-			conf.set("shops.$i.material", warp.material)
+			conf.set("shops.$i.material", warp.material?.name)
 			conf.set("shops.$i.lore", warp.lore)
 			conf.set("shops.$i.name", warp.name)
 		}
