@@ -15,13 +15,13 @@ import java.util.*
  * Last edit 01.05.2018
  */
 interface Warp {
-    val uuid: UUID
-    val location: Location?
-    val material: Material?
-    val lore: MutableList<String>
-    val name: String?
+	val uuid: UUID
+	val location: Location?
+	val material: Material?
+	val lore: MutableList<String>
+	val name: String?
 
-    fun getItem() = ItemBuilder(material!!).setLore(lore).setName("§9$name").build()
+	fun getItem() = ItemBuilder(material!!).setLore(lore).setName("§9$name").build()
 
-    fun getItemWithUUIDLore() = ItemBuilder(material!!).setLore(lore).addLore("", "§eDieser Shop gehört: §a$uuid").setName("§9$name").build()
+	fun getItemWithUUIDLore() = ItemBuilder(material!!).setLore(lore)/*.addLore("", "§eDieser Shop gehört: §a$uuid")*/.setName("§9$name").build()
 }

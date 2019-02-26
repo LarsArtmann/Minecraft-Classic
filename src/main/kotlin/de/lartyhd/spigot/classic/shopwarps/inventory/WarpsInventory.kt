@@ -8,6 +8,7 @@ import de.lartyhd.spigot.classic.shopwarps.Injector
 import de.lartyhd.spigot.classic.shopwarps.builder.InventoryBuilder
 import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
 import de.lartyhd.spigot.classic.shopwarps.warp.Warp
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.InventoryView
@@ -104,28 +105,26 @@ object WarpsInventory {
 		setWarps()
 	}
 
-	private fun updateInventory() {
+	private fun updateInventory(warps: List<Warp> = this.warps) {
 		main.replaceWith(ItemStack(Material.AIR), 9, 44)
 		for (i in 9 until warps.size + 9) main.setItem(i, warps[i - 9].getItemWithUUIDLore())
 	}
 
 	private fun setWarps() = Injector.configManager.setWarps(warps)
 
-	fun getWarp(name: String): Warp? {
-		for (warp in warps) if (warp.name == name) return warp
-		return null
-	}
+	fun getWarp(name: String): Warp? = warps.find { it.name == name }
 
-	fun getWarp(uuid: UUID): Warp? {
-		for (warp in warps) if (warp.uuid == uuid) return warp
-		return null
-	}
+	fun getWarp(uuid: UUID): Warp? = warps.find { it.uuid == uuid }
 
-	fun openMain(humanEntity: HumanEntity) = openInventory(humanEntity, main)
+	fun openMain(humanEntity: HumanEntity) =
+			openInventory(humanEntity, main.apply { updateInventory(getSortedWarps()) })
 //
 //    fun openSettings(humanEntity: HumanEntity) = openInventory(humanEntity, settings)
 //
 //    fun openCreate(humanEntity: HumanEntity) = openInventory(humanEntity, create)
 
-	fun openInventory(humanEntity: HumanEntity, inventoryBuilder: InventoryBuilder): InventoryView = humanEntity.openInventory(inventoryBuilder.build())
+	fun openInventory(humanEntity: HumanEntity, inventoryBuilder: InventoryBuilder): InventoryView =
+			humanEntity.openInventory(inventoryBuilder.build())
+
+	private fun getSortedWarps() = warps.sortedBy { Bukkit.getOfflinePlayer(it.uuid)?.lastPlayed ?: -1 }.reversed()
 }
