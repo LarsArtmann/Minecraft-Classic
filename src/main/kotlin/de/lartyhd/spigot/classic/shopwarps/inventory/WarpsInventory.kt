@@ -126,7 +126,8 @@ object WarpsInventory {
 	fun openInventory(humanEntity: HumanEntity, inventoryBuilder: InventoryBuilder): InventoryView =
 			humanEntity.openInventory(inventoryBuilder.build())
 
-	private fun getSortedWarps() = warps.sortedBy { Bukkit.getOfflinePlayer(it.uuid)?.lastPlayed ?: -1 }.sortedBy {
-		if (Bukkit.getPlayer(it.uuid) == null) 0 else 1
+	private fun getSortedWarps() = warps.sortedBy {
+		val player = Bukkit.getOfflinePlayer(it.uuid) ?: return@sortedBy -1L
+		if (player.isOnline) Long.MAX_VALUE else player.lastPlayed
 	}.reversed()
 }

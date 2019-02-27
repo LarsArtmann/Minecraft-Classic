@@ -27,7 +27,6 @@ object Injector {
 //        GenerateWarpListener(javaPlugin)
 	}
 
-	@Suppress("MemberVisibilityCanBePrivate")
 	fun addWarps() {
 		configManager.addWarps(WarpsInventory.warps)
 		WarpsInventory.updateWarps()
