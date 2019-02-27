@@ -74,6 +74,7 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 		}
 		val warp = WarpsInventory.getWarp(event.currentItem.itemMeta.displayName.substring(2))
 		if (event.currentItem != warp?.getItemWithUUIDLore()) return
+		humanEntity.fallDistance = 0f
 		humanEntity.teleport(warp?.location)
 	}
 

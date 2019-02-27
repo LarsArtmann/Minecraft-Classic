@@ -126,5 +126,7 @@ object WarpsInventory {
 	fun openInventory(humanEntity: HumanEntity, inventoryBuilder: InventoryBuilder): InventoryView =
 			humanEntity.openInventory(inventoryBuilder.build())
 
-	private fun getSortedWarps() = warps.sortedBy { Bukkit.getOfflinePlayer(it.uuid)?.lastPlayed ?: -1 }.reversed()
+	private fun getSortedWarps() = warps.sortedBy { Bukkit.getOfflinePlayer(it.uuid)?.lastPlayed ?: -1 }.sortedBy {
+		if (Bukkit.getPlayer(it.uuid) == null) 0 else 1
+	}.reversed()
 }

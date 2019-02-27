@@ -5,8 +5,11 @@
 package de.lartyhd.spigot.classic.shopwarps.warp
 
 import de.lartyhd.spigot.classic.shopwarps.builder.ItemBuilder
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemStack
 import java.util.*
 
 /**
@@ -23,5 +26,15 @@ interface Warp {
 
 	fun getItem() = ItemBuilder(material!!).setLore(lore).setName("§9$name").build()
 
-	fun getItemWithUUIDLore() = ItemBuilder(material!!).setLore(lore)/*.addLore("", "§eDieser Shop gehört: §a$uuid")*/.setName("§9$name").build()
+	fun getItemWithUUIDLore(): ItemStack {
+		val item = ItemBuilder(material!!)
+				.setLore(lore)
+				/*.addLore("", "§eDieser Shop gehört: §a$uuid")*/
+				.setName("§9$name")
+				.hideItemFlags()
+		if (Bukkit.getPlayer(uuid) != null)
+			item.addEnchant(Enchantment.LUCK, 10, true)
+
+		return item.build()
+	}
 }
