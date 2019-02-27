@@ -24,12 +24,12 @@ interface Warp {
 	val lore: MutableList<String>
 	val name: String?
 
-	fun getItem() = ItemBuilder(material!!).setLore(lore).setName("§9$name").build()
+//	fun getItem() = ItemBuilder(material!!).setLore(lore).setName("§9$name").build()
 
 	fun getItemWithUUIDLore(): ItemStack {
 		val item = ItemBuilder(material!!)
 				.setLore(lore)
-				/*.addLore("", "§eDieser Shop gehört: §a$uuid")*/
+				.addLore("", "§eDieser Shop gehört: §a${Bukkit.getOfflinePlayer(uuid)?.name ?: "UNBEKANNT"}")
 				.setName("§9$name")
 				.hideItemFlags()
 		if (Bukkit.getPlayer(uuid) != null)
