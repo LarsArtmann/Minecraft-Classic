@@ -66,7 +66,7 @@ class ConfigManager(val folder: File, fileName: String) {
 
 	private fun addWarp(warps: MutableList<Warp>, warp: Warp, uuid: UUID) =
 			if (WarpsInventory.getWarp(uuid) == null) warps += warp
-			else System.err.println("Der Spieler mit der UUID: $uuid hate mehr als ein Warp. Dies könnte ein Bug sein.")
+			else System.err.println("Der Spieler mit der UUID: $uuid hatte mehr als ein Warp. Dies könnte ein Bug sein.")
 
 
 }
