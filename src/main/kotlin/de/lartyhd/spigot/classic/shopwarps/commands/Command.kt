@@ -4,7 +4,7 @@
 package de.lartyhd.spigot.classic.shopwarps.commands
 
 import de.lartyhd.spigot.classic.shopwarps.commands.interfaces.ICommand
-import org.bukkit.command.CommandExecutor
+import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.PluginCommand
 import org.bukkit.command.TabCompleter
@@ -24,7 +24,7 @@ abstract class Command(val javaPlugin: JavaPlugin,
                        var usage: String = "",
                        val minLength: Int = 0,
                        val maxLength: Int = 0,
-                       tabCompleter: TabCompleter? = null) : CommandExecutor, ICommand {
+                       tabCompleter: TabCompleter? = null) : ICommand {
 
     var prefix = "§f[§b${javaPlugin.name}§f] §r"
 
@@ -36,15 +36,17 @@ abstract class Command(val javaPlugin: JavaPlugin,
                 permissionMessage = ""
                 this.tabCompleter = tabCompleter
             }
-            command.executor = this
+            command.javaClass.getDeclaredField("executor").apply {
+                isAccessible = true
+            }.set(command, this)
         }
         if (maxLength > 0) usage = if (minLength == 0) "|[help]|$usage" else "<help>|$usage"
     }
 
-    override fun onCommand(sender: CommandSender, command: org.bukkit.command.Command, s: String, args: Array<String>?): Boolean {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         hasPermission(sender) {
             when {
-                args == null || args.isEmpty() -> perform(sender, emptyArray())
+                args.isEmpty() -> perform(sender, emptyArray())
                 args.size < minLength || args.size > maxLength || (maxLength > 0 && args[0].equals("help", true)) ->
                     sendUseMessage(sender)
                 else -> perform(sender, args)

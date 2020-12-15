@@ -18,18 +18,18 @@ import java.util.*
  */
 interface ICommand : CommandExecutor, DefaultClassValuesPermissionsTester {
 
-    override fun onCommand(sender: CommandSender, command: org.bukkit.command.Command, s: String, args: Array<String>?): Boolean
+	override fun onCommand(sender: CommandSender, command: org.bukkit.command.Command, label: String, args: Array<String>): Boolean
 
-    fun perform(sender: CommandSender, args: Array<String>)
+	fun perform(sender: CommandSender, args: Array<String>)
 
-    fun isPlayer(sender: CommandSender, lambda: (Player) -> Unit)
+	fun isPlayer(sender: CommandSender, lambda: (Player) -> Unit)
 
-    fun getTarget(sender: CommandSender, player: Player?, lambda: (Player) -> Unit)
+	fun getTarget(sender: CommandSender, player: Player?, lambda: (Player) -> Unit)
 
-    fun getTarget(sender: CommandSender, uuid: UUID, lambda: (Player) -> Unit) = getTarget(sender, Bukkit.getPlayer(uuid), lambda)
+	fun getTarget(sender: CommandSender, uuid: UUID, lambda: (Player) -> Unit) = getTarget(sender, Bukkit.getPlayer(uuid), lambda)
 
-    fun getTarget(sender: CommandSender, name: String, lambda: (Player) -> Unit) = getTarget(sender, Bukkit.getPlayer(name), lambda)
+	fun getTarget(sender: CommandSender, name: String, lambda: (Player) -> Unit) = getTarget(sender, Bukkit.getPlayer(name), lambda)
 
-    fun sendUseMessage(sender: CommandSender)
+	fun sendUseMessage(sender: CommandSender)
 
 }

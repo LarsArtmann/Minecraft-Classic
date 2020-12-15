@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.41'
+    ext.kotlin_version = '1.4.21'
 
     repositories {
         mavenCentral()
@@ -10,7 +10,7 @@ buildscript {
 }
 
 group 'de.lartyhd.spigot.classic'
-version '1.0-SNAPSHOT'
+version '1.0.0-1.16.4'
 
 apply plugin: 'kotlin'
 
@@ -26,14 +26,23 @@ repositories {
     }
 }
 
-
+configurations {
+    // configuration that holds jars to include in the jar
+    compile.extendsFrom jarLibs
+}
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    jarLibs "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '0.11.91.1'
+    jarLibs group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '0.11.91.1'
+    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+}
+
+jar {
+    from {
+        configurations.jarLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 compileKotlin {
@@ -41,10 +50,4 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'C:\\Users\\LartyHD\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib-jdk8\\1.2.41\\5e34ca185bbea7452d704ed3537a22314a809383\\kotlin-stdlib-jdk8-1.2.41.jar!\\META-INF\\MANIFEST.MF'
-    }
 }
