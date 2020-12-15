@@ -82,45 +82,45 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun addLore(lore: Collection<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        val itemLore = itemMeta.lore ?: mutableListOf()
+        val itemLore = itemMeta?.lore ?: mutableListOf()
         itemLore.addAll(lore)
-        itemMeta.lore = itemLore
+        itemMeta?.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun addLore(i: Int, lore: Collection<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        val itemLore = itemMeta.lore ?: mutableListOf()
+        val itemLore = itemMeta?.lore ?: mutableListOf()
         itemLore.addAll(i, lore)
-        itemMeta.lore = itemLore
+        itemMeta?.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun addLore(vararg lore: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        val itemLore = itemMeta.lore ?: mutableListOf()
+        val itemLore = itemMeta?.lore ?: mutableListOf()
         itemLore.addAll(lore)
-        itemMeta.lore = itemLore
+        itemMeta?.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun addLore(lore: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        val itemLore = itemMeta.lore ?: mutableListOf()
+        val itemLore = itemMeta?.lore ?: mutableListOf()
         itemLore.add(lore)
-        itemMeta.lore = itemLore
+        itemMeta?.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun addLore(i: Int, lore: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        val itemLore = itemMeta.lore ?: mutableListOf()
+        val itemLore = itemMeta?.lore ?: mutableListOf()
         itemLore.add(i, lore)
-        itemMeta.lore = itemLore
+        itemMeta?.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -134,18 +134,18 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 
     fun removeLore(lore: List<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        val itemLore = itemMeta.lore ?: mutableListOf()
+        val itemLore = itemMeta?.lore ?: mutableListOf()
         itemLore.removeAll(lore)
-        itemMeta.lore = itemLore
+        itemMeta?.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun removeLore(i: Int): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        val itemLore = itemMeta.lore ?: mutableListOf()
+        val itemLore = itemMeta?.lore ?: mutableListOf()
         itemLore.removeAt(i)
-        itemMeta.lore = itemLore
+        itemMeta?.lore = itemLore
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -156,14 +156,14 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 	 */
     fun setLore(lore: List<String>): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.lore = lore
+        itemMeta?.lore = lore
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun setLore(lore: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.lore = listOf(lore)
+        itemMeta?.lore = listOf(lore)
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -175,28 +175,28 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
     @Suppress("MemberVisibilityCanBePrivate")
     fun setDisplayName(displayName: String): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.displayName = displayName
+        itemMeta?.setDisplayName(displayName)
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun setBreakable(): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.spigot().isUnbreakable = false
+        itemMeta?.isUnbreakable = false
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun setUnbreakable(): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.spigot().isUnbreakable = true
+        itemMeta?.isUnbreakable = true
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun setUnbreakable(unbreakable: Boolean): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.spigot().isUnbreakable = unbreakable
+        itemMeta?.isUnbreakable = unbreakable
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -209,21 +209,21 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 	 */
     fun addEnchant(enchantment: Enchantment, level: Int): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.addEnchant(enchantment, level, true)
+        itemMeta?.addEnchant(enchantment, level, true)
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun addEnchant(enchantment: Enchantment, level: Int, ignoreLevelRestriction: Boolean): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.addEnchant(enchantment, level, ignoreLevelRestriction)
+        itemMeta?.addEnchant(enchantment, level, ignoreLevelRestriction)
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun addItemFlags(vararg itemFlags: ItemFlag): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.addItemFlags(*itemFlags)
+        itemMeta?.addItemFlags(*itemFlags)
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -236,14 +236,14 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 	 */
     fun removeEnchant(enchantment: Enchantment): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.removeEnchant(enchantment)
+        itemMeta?.removeEnchant(enchantment)
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun removeItemFlags(vararg itemFlags: ItemFlag): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.removeItemFlags(*itemFlags)
+        itemMeta?.removeItemFlags(*itemFlags)
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -256,14 +256,14 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 	 */
     fun clearEnchants(): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.enchants.clear()
+        itemMeta?.enchants?.clear()
         itemStack.itemMeta = itemMeta
         return this
     }
 
     fun clearItemFlags(): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.itemFlags.clear()
+        itemMeta?.itemFlags?.clear()
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -276,7 +276,7 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 	 */
     fun hideItemFlags(): ItemBuilder {
         val itemMeta = itemStack.itemMeta
-        itemMeta.addItemFlags(*ItemFlag.values())
+        itemMeta?.addItemFlags(*ItemFlag.values())
         itemStack.itemMeta = itemMeta
         return this
     }
@@ -548,8 +548,8 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
 	 */
     fun setColor(color: Color): ItemBuilder {
         try {
-            val leatherArmorMeta = itemStack.itemMeta as LeatherArmorMeta
-            leatherArmorMeta.color = color
+            val leatherArmorMeta = itemStack.itemMeta as? LeatherArmorMeta
+            leatherArmorMeta?.setColor(color)
             itemStack.itemMeta = leatherArmorMeta
         } catch (ignored: ClassCastException) {
         }
@@ -658,18 +658,11 @@ class ItemBuilder(private val itemStack: ItemStack) : Builder<ItemStack> {
     /*
 	 *Extras
 	 */
-    fun clone(): ItemBuilder {
-        return ItemBuilder(itemStack.clone())
-    }
+    fun clone(): ItemBuilder = ItemBuilder(itemStack.clone())
 
+    override fun build(): ItemStack = itemStack
 
-    override fun build(): ItemStack {
-        return itemStack
-    }
-
-    override fun toString(): String {
-        return "ItemBuilder(itemStack=$itemStack)"
-    }
+    override fun toString(): String = "ItemBuilder(itemStack=$itemStack)"
     /*
 	 *Extras
 	 */

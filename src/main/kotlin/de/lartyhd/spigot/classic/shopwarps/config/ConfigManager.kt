@@ -35,10 +35,10 @@ class ConfigManager(val folder: File, fileName: String) {
 			if (conf.get("shops.$i") == null) return //WARNING: Hier ist return richtig und wichtig
 			val locationPrefix = "shops.$i.location."
 			val uuid: UUID = UUID.fromString(conf.getString("shops.$i.uuid"))
-			val location = Location(Bukkit.getWorld(conf.getString("${locationPrefix}world")), conf.getDouble("${locationPrefix}X"), conf.getDouble("${locationPrefix}Y"), conf.getDouble("${locationPrefix}Z"), conf.getDouble("${locationPrefix}Yaw").toFloat(), conf.getDouble("${locationPrefix}Pitch").toFloat())
-			val material: Material = Material.getMaterial(conf.getString("shops.$i.material"))
+			val location = Location(Bukkit.getWorld(conf.getString("${locationPrefix}world")!!), conf.getDouble("${locationPrefix}X"), conf.getDouble("${locationPrefix}Y"), conf.getDouble("${locationPrefix}Z"), conf.getDouble("${locationPrefix}Yaw").toFloat(), conf.getDouble("${locationPrefix}Pitch").toFloat())
+			val material: Material = Material.getMaterial(conf.getString("shops.$i.material")!!)!!
 			val lore: MutableList<String> = conf.getStringList("shops.$i.lore")
-			val name: String = conf.getString("shops.$i.name")
+			val name: String = conf.getString("shops.$i.name")!!
 			addWarp(warps, SimpleWarp(uuid, location, material, lore, name), uuid)
 		}
 	}
@@ -46,7 +46,7 @@ class ConfigManager(val folder: File, fileName: String) {
 
 	fun setWarps(warps: List<Warp>) {
 		conf.set("shops", null) //CLEAR all Shops
-		for (i in 0 until warps.size) {
+		for (i in warps.indices) {
 			val warp = warps[i]
 			val locationPrefix = "shops.$i.location."
 			val location = warp.location

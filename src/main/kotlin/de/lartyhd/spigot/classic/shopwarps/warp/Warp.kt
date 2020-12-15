@@ -29,7 +29,7 @@ interface Warp {
 	fun getItemWithUUIDLore(): ItemStack {
 		val item = ItemBuilder(material!!)
 				.setLore(lore)
-				.addLore("", "§eDieser Shop gehört: §a${Bukkit.getOfflinePlayer(uuid)?.name ?: "UNBEKANNT"}")
+				.addLore("", "§eDieser Shop gehört: §a${Bukkit.getOfflinePlayer(uuid).name ?: "UNBEKANNT"}")
 				.setName("§9$name")
 				.hideItemFlags()
 		if (Bukkit.getPlayer(uuid) != null)

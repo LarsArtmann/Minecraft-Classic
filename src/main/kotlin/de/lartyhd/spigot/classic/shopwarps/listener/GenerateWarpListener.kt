@@ -19,14 +19,14 @@ class GenerateWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin), Defau
 
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
-        val inventory = event.inventory ?: return
-        val title = inventory.title ?: return
+        val inventory = event.inventory
+        val title = event.view.title
         if (!title.startsWith("§9Shops §8- §9")) return
-        val subtitle = title.substring("§9Shops §8- §9".length)
+//        val subtitle = title.substring("§9Shops §8- §9".length)
         val currentItem = event.currentItem ?: return
-        val itemMeta = currentItem.itemMeta ?: return
-        val displayName = itemMeta.displayName ?: return
-        val humanEntity = event.whoClicked ?: return
+//        val itemMeta = currentItem.itemMeta ?: return
+//        val displayName = itemMeta.displayName
+        val humanEntity = event.whoClicked
         if (humanEntity.openInventory.topInventory != inventory) return
         cancel(event)
 //        when (subtitle) {

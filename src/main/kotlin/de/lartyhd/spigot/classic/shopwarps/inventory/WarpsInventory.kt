@@ -11,7 +11,6 @@ import de.lartyhd.spigot.classic.shopwarps.warp.Warp
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
-import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
@@ -64,7 +63,7 @@ object WarpsInventory {
 		main = InventoryBuilder(54, "§9Shops")
 				.fillWith(glass, 0, 8)
 				.fillWith(glass, 45, 53)
-				.setItem(4, ItemBuilder(Material.SIGN)
+				.setItem(4, ItemBuilder(Material.SPRUCE_SIGN)
 						.setName("§9Infos")
 						.setLore(listOf(
 								" ",
@@ -74,10 +73,10 @@ object WarpsInventory {
 								"§7Danke an §bTerra §7und §bAyumu §7für das coole §bProjekt"
 						))
 						.build())
-				.setItem(46, ItemBuilder(Material.LEGACY_INK_SACK, 1.toShort())
+				.setItem(46, ItemBuilder(Material.RED_DYE)
 						.setName("§cLösche deinen Warp")
 						.build())
-				.setItem(52, ItemBuilder(Material.LEGACY_INK_SACK, 10.toShort())
+				.setItem(52, ItemBuilder(Material.LIME_DYE)
 						.setName("§9Setze deinen eigenen Warp")
 						.addLore("§7Setzt den Warp auf deine aktuelle Location")
 						.build())
@@ -123,11 +122,12 @@ object WarpsInventory {
 //
 //    fun openCreate(humanEntity: HumanEntity) = openInventory(humanEntity, create)
 
-	fun openInventory(humanEntity: HumanEntity, inventoryBuilder: InventoryBuilder): InventoryView =
-			humanEntity.openInventory(inventoryBuilder.build())
+	private fun openInventory(humanEntity: HumanEntity, inventoryBuilder: InventoryBuilder) {
+		humanEntity.openInventory(inventoryBuilder.build())
+	}
 
 	private fun getSortedWarps() = warps.sortedBy {
-		val player = Bukkit.getOfflinePlayer(it.uuid) ?: return@sortedBy -1L
+		val player = Bukkit.getOfflinePlayer(it.uuid)
 		if (player.isOnline) Long.MAX_VALUE else player.lastPlayed
 	}.reversed()
 }

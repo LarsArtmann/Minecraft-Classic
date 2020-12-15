@@ -7,6 +7,7 @@ package de.lartyhd.spigot.classic.shopwarps
 import de.lartyhd.spigot.classic.shopwarps.commands.ShopsCommand
 import de.lartyhd.spigot.classic.shopwarps.config.ConfigManager
 import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory
+import de.lartyhd.spigot.classic.shopwarps.listener.GenerateWarpListener
 import de.lartyhd.spigot.classic.shopwarps.listener.ShopsWarpListener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -24,7 +25,7 @@ object Injector {
 		addWarps()
 		ShopsCommand(javaPlugin)
 		ShopsWarpListener(javaPlugin)
-//        GenerateWarpListener(javaPlugin)
+        GenerateWarpListener(javaPlugin)
 	}
 
 	fun addWarps() {

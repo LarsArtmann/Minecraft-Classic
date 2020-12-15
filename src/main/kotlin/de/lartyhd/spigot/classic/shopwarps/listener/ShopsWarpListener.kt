@@ -7,6 +7,7 @@ package de.lartyhd.spigot.classic.shopwarps.listener
 import de.lartyhd.spigot.classic.shopwarps.inventory.WarpsInventory
 import de.lartyhd.spigot.classic.shopwarps.warp.NullWarp
 import de.lartyhd.spigot.classic.shopwarps.warp.SimpleWarp
+import de.lartyhd.spigot.classic.shopwarps.warp.Warp
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -49,10 +50,11 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 	fun onInventoryClickEvent(event: InventoryClickEvent) {
 		val inventory = event.inventory
 		val humanEntity = event.whoClicked
-		if (inventory?.title != "§9Shops") return
+		if (event.view.title != "§9Shops") return
 		if (humanEntity.openInventory.topInventory != inventory) return
 		cancel(event)
-		if ((event.slot == 52 || event.slot == 46 || (event.slot in 9..44)) && event.currentItem != null && event.currentItem.type != Material.AIR) humanEntity.closeInventory()
+        val currentItem = event.currentItem
+        if ((event.slot == 52 || event.slot == 46 || (event.slot in 9..44)) && currentItem != null && currentItem.type != Material.AIR) humanEntity.closeInventory()
 		when {
 			event.slot == 52 -> {
 				humanEntity.sendMessage("§eMit \"CANCEL\" kanst du immer abbrechen")
@@ -65,17 +67,12 @@ class ShopsWarpListener(javaPlugin: JavaPlugin) : Listener(javaPlugin) {
 				WarpsInventory.removeAndUpdateWarps(humanEntity.uniqueId)
 				humanEntity.sendMessage("§bDein ShopWarp wurde gelöscht")
 			}
-			event.slot < 9 || event.slot > 44
-					|| event.currentItem == null
-					|| event.currentItem.itemMeta == null
-					|| event.currentItem.itemMeta.displayName == null -> {
-				return
-			}
+			event.slot < 9 || event.slot > 44 || currentItem?.itemMeta?.displayName == null -> return
 		}
-		val warp = WarpsInventory.getWarp(event.currentItem.itemMeta.displayName.substring(2))
-		if (event.currentItem != warp?.getItemWithUUIDLore()) return
+		val warp: Warp? = WarpsInventory.getWarp(currentItem?.itemMeta?.displayName!!.substring(2))
+		if (currentItem != warp?.getItemWithUUIDLore()) return
 		humanEntity.fallDistance = 0f
-		humanEntity.teleport(warp?.location)
+		humanEntity.teleport(warp.location!!)
 	}
 
 	@EventHandler

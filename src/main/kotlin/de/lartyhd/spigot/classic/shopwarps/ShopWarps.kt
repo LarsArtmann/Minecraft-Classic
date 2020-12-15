@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin
  * Created by Lars Artmann | LartyHD on 01.05.2018 07:56.
  * Last edit 01.05.2018
  */
+@Suppress("unused") //Plugin entry point
 class ShopWarps : JavaPlugin() {
 
     override fun onEnable() {
